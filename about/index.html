@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Page and Pixel Designs</title>
+    <meta name="description" content="Founded by an indie author who understands budget constraints. We use AI assistance with human oversight to deliver quality websites at affordable prices.">
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/auth-components.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Page & Pixel Designs</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/" class="active">About</a></li>
+                <li><a href="/services/">Services</a></li>
+                <li><a href="/themes/">Themes</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <!-- Authentication Modal -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+    <div class="auth-modal-content">
+        <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+        
+        <!-- Sign In Form -->
+        <div id="signInForm" class="auth-form active">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your author dashboard</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signInError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Don't have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignUp()">
+                Create Account
+            </button>
+        </div>
+        
+        <!-- Sign Up Form -->
+        <div id="signUpForm" class="auth-form">
+            <div class="auth-header">
+                <h2>Create Your Account</h2>
+                <p>Start building your author platform today</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignUp(event)">
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpEmail">Email Address</label>
+                    <input type="email" id="signUpEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required minlength="8">
+                    <small>At least 8 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpConfirm">Confirm Password</label>
+                    <input type="password" id="signUpConfirm" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signUpTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signUpError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignIn()">
+                Sign In Instead
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="authNotification" class="auth-notification" style="display: none;">
+    <div class="notification-content">
+        <span class="notification-icon">✅</span>
+        <span class="notification-message"></span>
+    </div>
+</div>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="about-hero">
+                <div class="hero-content">
+                    <h1>Built by an Author, for Authors</h1>
+                    <p class="hero-subtitle">Page and Pixel Designs was founded by someone who knows exactly what it's like to struggle with tight budgets while trying to build a professional author platform.</p>
+                </div>
+            </section>
+
+            <!-- Story Section -->
+            <section class="story-section">
+                <div class="story-content">
+                    <h2>My Story</h2>
+                    <div class="story-text">
+                        <p>As an indie author myself, I've been there. I've stared at website quotes that cost more than my entire book marketing budget. I've tried to build my own site and felt overwhelmed by the technical complexity. I've compromised on quality because "affordable" often meant "amateur."</p>
+                        
+                        <p>That's why I created Page and Pixel Designs. I believe every author deserves a professional website that represents their work beautifully—without breaking the bank or sacrificing quality.</p>
+                        
+                        <p>My mission is simple: provide indie authors with stunning, functional websites at prices that actually make sense for our budgets.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transparency Section -->
+            <section class="transparency-section">
+                <div class="transparency-content">
+                    <h2>How We Keep Costs Low (While Maintaining Quality)</h2>
+                    <div class="transparency-grid">
+                        <div class="transparency-item fade-in-element">
+                            <div class="transparency-icon">🤖</div>
+                            <h3>AI-Assisted Development</h3>
+                            <p>We use cutting-edge AI tools to streamline the coding process, allowing us to build websites faster and more efficiently than traditional methods.</p>
+                        </div>
+                        <div class="transparency-item fade-in-element">
+                            <div class="transparency-icon">👨‍💻</div>
+                            <h3>Human Oversight & Quality Control</h3>
+                            <p>Every line of code is reviewed by experienced developers. Every design decision is made by real people who understand your needs as an author.</p>
+                        </div>
+                        <div class="transparency-item fade-in-element">
+                            <div class="transparency-icon">🎯</div>
+                            <h3>Author-Focused Approach</h3>
+                            <p>We don't build generic websites. We specialize exclusively in author platforms, so we know exactly what features you need and which ones you don't.</p>
+                        </div>
+                        <div class="transparency-item fade-in-element">
+                            <div class="transparency-icon">⚡</div>
+                            <h3>Streamlined Process</h3>
+                            <p>Our collaborative "vibe coding" approach means faster iterations, fewer revisions, and a final product that matches your vision perfectly.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Comparison -->
+            <section class="pricing-comparison">
+                <h2>Honest Pricing That Makes Sense</h2>
+                <p class="pricing-intro">We believe in transparent pricing. Here's how our costs compare to typical website development:</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card typical">
+                        <h3>Typical Website Costs</h3>
+                        <div class="price-breakdown">
+                            <div class="price-item">
+                                <span class="service">Basic Author Website</span>
+                                <span class="price">$1,500 - $3,000</span>
+                            </div>
+                            <div class="price-item">
+                                <span class="service">+ Blog Integration</span>
+                                <span class="price">$500 - $800</span>
+                            </div>
+                            <div class="price-item">
+                                <span class="service">+ E-commerce Features</span>
+                                <span class="price">$800 - $1,500</span>
+                            </div>
+                            <div class="price-item">
+                                <span class="service">+ Custom Design</span>
+                                <span class="price">$1,000 - $2,000</span>
+                            </div>
+                            <div class="total-typical">
+                                <span class="service">Total with Features</span>
+                                <span class="price">$3,800 - $7,300</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card ours">
+                        <div class="our-promise">Our Promise</div>
+                        <h3>Page & Pixel Pricing</h3>
+                        <div class="price-breakdown">
+                            <div class="price-item">
+                                <span class="service">Complete Author Website</span>
+                                <span class="price">$50</span>
+                            </div>
+                            <div class="price-item">
+                                <span class="service">+ Any Additional Features</span>
+                                <span class="price">Varies</span>
+                            </div>
+                            <div class="max-policy">
+                                <div class="policy-badge">$200 Maximum Policy</div>
+                                <p>No matter what features you add—blog, e-commerce, galleries, custom design—your total will never exceed $200.</p>
+                            </div>
+                            <div class="total-ours">
+                                <span class="service">Maximum Total Cost</span>
+                                <span class="price">$200</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="savings-highlight">
+                    <div class="savings-content">
+                        <h3>You Save $3,600 - $7,100</h3>
+                        <p>That's money you can invest in editing, cover design, marketing, or your next book!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Values Section -->
+            <section class="values-section">
+                <h2>Our Values</h2>
+                <div class="values-grid">
+                    <div class="value-item fade-in-element">
+                        <div class="value-icon">💡</div>
+                        <h3>Transparency</h3>
+                        <p>We're honest about our methods, our pricing, and our process. No hidden fees, no surprises.</p>
+                    </div>
+                    <div class="value-item fade-in-element">
+                        <div class="value-icon">🤝</div>
+                        <h3>Collaboration</h3>
+                        <p>Your website should reflect your vision, not ours. We work with you every step of the way.</p>
+                    </div>
+                    <div class="value-item fade-in-element">
+                        <div class="value-icon">⭐</div>
+                        <h3>Quality</h3>
+                        <p>Affordable doesn't mean compromised. Every website meets professional standards.</p>
+                    </div>
+                    <div class="value-item fade-in-element">
+                        <div class="value-icon">📚</div>
+                        <h3>Author-First</h3>
+                        <p>We understand the unique challenges of the indie publishing world because we live it too.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="about-cta">
+                <div class="cta-content">
+                    <h2>Ready to Get Started?</h2>
+                    <p>Let's build something amazing together—without breaking your budget.</p>
+                    <div class="cta-buttons">
+                        <a href="/themes/" class="cta-button">Browse Our Themes</a>
+                        <a href="/contact/" class="cta-button-secondary">Let's Chat</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth-system.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

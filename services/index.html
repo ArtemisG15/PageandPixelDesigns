@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Build Your Perfect Author Website</title>
+    <meta name="description" content="Build your custom author website package. Choose your theme, add features, and launch with everything included. $200 maximum policy.">
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/auth-components.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Stripe JavaScript -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Page & Pixel Designs</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/services/" class="active">Services</a></li>
+                <li><a href="/themes/">Themes</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <!-- Authentication Modal -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+    <div class="auth-modal-content">
+        <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+        
+        <!-- Sign In Form -->
+        <div id="signInForm" class="auth-form active">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your author dashboard</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signInError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Don't have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignUp()">
+                Create Account
+            </button>
+        </div>
+        
+        <!-- Sign Up Form -->
+        <div id="signUpForm" class="auth-form">
+            <div class="auth-header">
+                <h2>Create Your Account</h2>
+                <p>Start building your author platform today</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignUp(event)">
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpEmail">Email Address</label>
+                    <input type="email" id="signUpEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required minlength="8">
+                    <small>At least 8 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpConfirm">Confirm Password</label>
+                    <input type="password" id="signUpConfirm" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signUpTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signUpError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignIn()">
+                Sign In Instead
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="authNotification" class="auth-notification" style="display: none;">
+    <div class="notification-content">
+        <span class="notification-icon">✅</span>
+        <span class="notification-message"></span>
+    </div>
+</div>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="services-hero">
+                <h1>Build Your Perfect Website Package</h1>
+                <p>Choose your theme, add features, and launch with everything included. Never pay more than $200.</p>
+                <div class="hero-highlight">
+                    <div class="highlight-item">
+                        <span class="highlight-icon">🎨</span>
+                        <span>Start with a Theme</span>
+                    </div>
+                    <div class="highlight-item">
+                        <span class="highlight-icon">⚡</span>
+                        <span>Add Features</span>
+                    </div>
+                    <div class="highlight-item">
+                        <span class="highlight-icon">🚀</span>
+                        <span>Launch Complete</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Package Builder -->
+            <section class="package-builder">
+                <!-- Updated Price Summary Section -->
+                <div class="price-summary">
+                    <div class="price-display">
+                        <div class="price-content">
+                            <div class="price-info">
+                                <h3>Your Package Total</h3>
+                                <div class="max-policy">Never more than $200</div>
+                            </div>
+                            <div class="total-price" id="totalPrice">$50</div>
+                        </div>
+                        <button class="start-over-btn" id="startOverBtn">Start Over</button>
+                    </div>
+                </div>
+
+                <!-- Step 1: Choose Base Website -->
+                <div class="builder-section">
+                    <h2>Step 1: Your Website Foundation</h2>
+                    <p class="section-description">Choose your starting point. New customers need the complete foundation, while returning customers can uncheck this to add features to their existing site.</p>
+                    
+                    <div class="option-group">
+                        <div class="service-option selected" data-price="50" data-type="base" id="baseWebsiteOption">
+                            <input type="checkbox" name="base-website" value="complete" checked id="baseWebsiteCheckbox">
+                            <div class="option-content">
+                                <h4>Complete Author Website - $50</h4>
+                                <div class="included-features">
+                                    <span class="feature">✅ Mobile-responsive design</span>
+                                    <span class="feature">✅ Book showcase with retail links</span>
+                                    <span class="feature">✅ Author bio & photo</span>
+                                    <span class="feature">✅ Contact form</span>
+                                    <span class="feature">✅ Newsletter signup integration</span>
+                                    <span class="feature">✅ Social media integration</span>
+                                    <span class="feature">✅ Basic SEO setup</span>
+                                    <span class="feature">✅ Launch support</span>
+                                </div>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>For new customers:</strong> This includes everything you need to start connecting with readers professionally, including email list building.<br><br>
+                                    <strong>For returning customers:</strong> Uncheck this if you already have a website and just want to add features.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Choose Your Theme -->
+                <div class="builder-section">
+                    <h2>Step 2: Choose Your Theme</h2>
+                    <p class="section-description">Select a genre-specific theme or request a custom design. All themes are included in your base price.</p>
+                    
+                    <div class="theme-grid">
+                        <div class="theme-option" data-theme="fantasy">
+                            <div class="theme-preview theme-fantasy"></div>
+                            <h4>High Fantasy</h4>
+                            <p>Mystical designs with rich purples and gold accents</p>
+                        </div>
+                        <div class="theme-option" data-theme="romance">
+                            <div class="theme-preview theme-romance"></div>
+                            <h4>Romance</h4>
+                            <p>Elegant layouts with soft, romantic colors</p>
+                        </div>
+                        <div class="theme-option" data-theme="apocalypse">
+                            <div class="theme-preview theme-apocalypse"></div>
+                            <h4>Apocalypse</h4>
+                            <p>Dark, gritty atmosphere for dystopian stories</p>
+                        </div>
+                        <div class="theme-option" data-theme="steampunk">
+                            <div class="theme-preview theme-steampunk"></div>
+                            <h4>Steampunk</h4>
+                            <p>Victorian elements with brass and copper tones</p>
+                        </div>
+                        <div class="theme-option" data-theme="drama">
+                            <div class="theme-preview theme-drama"></div>
+                            <h4>Drama</h4>
+                            <p>Clean, sophisticated design for contemporary fiction</p>
+                        </div>
+                    </div>
+                    <div class="custom-notice">
+                        <p><strong>Don't see one you like?</strong> Use the consultation option to discuss a custom theme!</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Add Features -->
+                <div class="builder-section">
+                    <h2>Step 3: Add Features (Optional)</h2>
+                    <p class="section-description">Enhance your website with additional features. Your base package already includes newsletter signup! Remember: your total will never exceed $200!</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-option" data-price="10" data-feature="testimonials" data-stripe-price="price_testimonials">
+                            <input type="checkbox" name="testimonials">
+                            <div class="option-content">
+                                <h4>Reader Reviews Section - $10</h4>
+                                <p>Highlight positive reader reviews and endorsements</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Excellent for:</strong> Building credibility with new readers<br>
+                                    <strong>Most effective when:</strong> You have positive reviews to showcase<br>
+                                    <strong>Tip:</strong> Even 3-5 good reviews make a strong impression
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-option" data-price="20" data-feature="worldbuilding" data-stripe-price="price_worldbuilding">
+                            <input type="checkbox" name="worldbuilding">
+                            <div class="option-content">
+                                <h4>Worldbuilding & Character Guide - $20</h4>
+                                <p>Dedicated pages for world details, character guides, and lore that fans love to explore</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Perfect for:</strong> Fantasy, romance, sci-fi, and series authors<br>
+                                    <strong>Great for:</strong> Character relationships, world maps, magic systems, timelines<br>
+                                    <strong>BookTok favorite:</strong> Fans obsess over these behind-the-scenes details
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-option" data-price="20" data-feature="events" data-stripe-price="price_events">
+                            <input type="checkbox" name="events">
+                            <div class="option-content">
+                                <h4>Events Calendar - $20</h4>
+                                <p>Display book signings, readings, and virtual events</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Perfect for:</strong> Authors doing book signings, readings, or virtual events<br>
+                                    <strong>Most valuable when:</strong> You're actively promoting and have events to showcase
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-option" data-price="25" data-feature="blog" data-stripe-price="price_blog">
+                            <input type="checkbox" name="blog">
+                            <div class="option-content">
+                                <h4>Blog System - $25</h4>
+                                <p>Content management system for regular reader engagement</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Best for:</strong> Authors planning to post regularly<br>
+                                    <strong>Benefits:</strong> Improves SEO, builds reader connection<br>
+                                    <strong>Consider if:</strong> You enjoy writing updates, book progress, or industry thoughts
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-option" data-price="30" data-feature="gallery" data-stripe-price="price_gallery">
+                            <input type="checkbox" name="gallery">
+                            <div class="option-content">
+                                <h4>Photo Gallery - $30</h4>
+                                <p>Showcase book covers, events, character art, and more</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Best for:</strong> Established authors with events or visual content<br>
+                                    <strong>Great for:</strong> Book covers, fan art, event photos<br>
+                                    <strong>Skip if:</strong> You're just starting and have limited visual content
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="feature-option" data-price="45" data-feature="ecommerce" data-stripe-price="price_ecommerce">
+                            <input type="checkbox" name="ecommerce">
+                            <div class="option-content">
+                                <h4>Direct Book Sales - $45</h4>
+                                <p>Sell and ship signed copies, special editions, or merchandise directly from your website</p>
+                            </div>
+                            <div class="help-icon">?
+                                <div class="tooltip">
+                                    <strong>Advanced feature for:</strong> Authors ready to manage direct sales and shipping<br>
+                                    <strong>Different from:</strong> Retail links to Amazon/bookstores (included in base package)<br>
+                                    <strong>Consider when:</strong> You want to offer exclusive signed copies or limited editions
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Choose Support -->
+                <div class="builder-section">
+                    <h2>Step 4: Choose Your Support Option</h2>
+                    <p class="section-description">We ensure your website launches perfectly with all features (including newsletter integration), then you choose your ongoing support preference.</p>
+                    
+                    <div class="support-options">
+                        <div class="support-option" data-support="handover">
+                            <input type="radio" name="support" value="handover" checked>
+                            <div class="option-content">
+                                <h4>Complete Handover (Included)</h4>
+                                <p>We launch your site, provide training, and hand over complete control. Perfect if you're comfortable managing updates yourself.</p>
+                                <div class="support-features">
+                                    <span class="feature">✅ Launch support & training</span>
+                                    <span class="feature">✅ Complete website control</span>
+                                    <span class="feature">✅ Documentation provided</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="support-option" data-support="maintenance">
+                            <input type="radio" name="support" value="maintenance">
+                            <div class="option-content">
+                                <h4>Ongoing Support - $5/month</h4>
+                                <p>We handle updates, security, backups, and content changes. Cancel anytime, no commitment. Perfect for busy authors.</p>
+                                <div class="support-features">
+                                    <span class="feature">✅ Monthly updates & security</span>
+                                    <span class="feature">✅ Content changes</span>
+                                    <span class="feature">✅ Technical support</span>
+                                    <span class="feature">✅ Cancel anytime</span>
+                                </div>
+                                <div class="subscription-note">
+                                    <strong>Note:</strong> Monthly support will be set up as a separate subscription after your website is completed.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final CTA Section -->
+                <div class="builder-section final-cta">
+                    <div class="cta-content">
+                        <h2>Ready to Get Started?</h2>
+                        <p>Choose how you'd like to proceed with your website project.</p>
+                        
+                        <div class="final-options">
+                            <div class="option-card pay-card">
+                                <div class="card-icon">💳</div>
+                                <h3>Pay Now & Start Building</h3>
+                                <p>Perfect if you're ready to move forward. We'll contact you within 24 hours to begin the collaborative design process.</p>
+                                <ul class="benefits">
+                                    <li>✅ Immediate project initiation</li>
+                                    <li>✅ Secure payment processing</li>
+                                    <li>✅ Full refund if not satisfied</li>
+                                    <li>✅ 24-hour response guarantee</li>
+                                </ul>
+                                <button class="primary-btn" onclick="handlePayment()">
+                                    Pay Now - <span id="finalPayAmount">$50</span>
+                                </button>
+                            </div>
+                            
+                            <div class="option-card consult-card">
+                                <div class="card-icon">🤝</div>
+                                <h3>Save Order & Schedule Consultation</h3>
+                                <p>Great if you have questions, want to discuss custom themes, or prefer to chat before committing. We'll save your selections!</p>
+                                <ul class="benefits">
+                                    <li>✅ Your order saved automatically</li>
+                                    <li>✅ Free 30-minute consultation</li>
+                                    <li>✅ Custom theme discussions</li>
+                                    <li>✅ No pressure, no commitment</li>
+                                </ul>
+                                <button class="secondary-btn" onclick="saveAndConsult()">
+                                    💾 Save & Schedule Consultation
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="trust-signals">
+                            <div class="trust-item">
+                                <span class="trust-icon">🔒</span>
+                                <span>Secure payment by Stripe</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="trust-icon">↩️</span>
+                                <span>Full refund if not satisfied</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="trust-icon">🛡️</span>
+                                <span>$200 maximum guarantee</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Payment Processing Modal -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Processing Your Payment</h3>
+                <button class="close-modal" onclick="closePaymentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary" id="paymentSummary">
+                    <!-- Payment details will be populated here -->
+                </div>
+                <p>You'll be redirected to Stripe's secure checkout page to complete your payment.</p>
+                <div class="modal-actions">
+                    <button class="proceed-btn" id="proceedToStripe">Proceed to Secure Checkout</button>
+                    <button class="cancel-btn" onclick="closePaymentModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Over Confirmation Modal -->
+    <div id="startOverModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Start Over?</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to clear all your current selections and start building a new package from scratch?</p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="cancelStartOver">Keep My Selections</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmStartOver">Yes, Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth-system.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

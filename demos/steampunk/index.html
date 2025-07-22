@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steampunk Theme Demo - Page & Pixel Designs</title>
+    <style>
+        :root {
+            --primary-brass: #b8860b;
+            --secondary-copper: #cd7f32;
+            --accent-bronze: #cd7f32;
+            --dark-brass: #9a7009;
+            --light-brass: #daa520;
+            --steel-gray: #4a4a4a;
+            --dark-brown: #3c2415;
+            --vintage-cream: #f5f5dc;
+            --copper-patina: #7fb069;
+            --steam-white: #f8f8ff;
+            --shadow-color: rgba(184, 134, 11, 0.4);
+            --text-light: #f5f5dc;
+            --text-dark: #3c2415;
+            --gradient-start: #3c2415;
+            --gradient-end: #4a4a4a;
+            --gear-bronze: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Steampunk floating gears animation */
+        .floating-gears {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gear {
+            position: absolute;
+            color: var(--primary-brass);
+            font-size: 16px;
+            animation: floatGear 10s infinite linear;
+            opacity: 0.3;
+        }
+
+        .gear::before {
+            content: '⚙';
+        }
+
+        @keyframes floatGear {
+            0% { 
+                transform: translateY(100vh) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.3; 
+            }
+            90% { 
+                opacity: 0.3; 
+            }
+            100% { 
+                transform: translateY(-10px) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* Demo controls */
+        .demo-controls {
+            background: rgba(60, 36, 21, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 3px solid var(--primary-brass);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 0 20px var(--shadow-color), inset 0 0 10px rgba(184, 134, 11, 0.1);
+        }
+
+        .demo-controls h3 {
+            color: var(--light-brass);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--shadow-color);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-brass), var(--secondary-copper));
+            color: var(--text-dark);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            border: 2px solid var(--dark-brass);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--light-brass), var(--primary-brass));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px var(--shadow-color);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light-brass);
+            border: 2px solid var(--primary-brass);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-brass);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        /* Header/Navigation */
+        .header {
+            position: relative;
+            padding: 1rem 0;
+            background: rgba(60, 36, 21, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-brass);
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light-brass);
+            text-shadow: 2px 2px 4px var(--shadow-color);
+            font-family: 'Georgia', serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item a {
+            color: var(--vintage-cream);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Georgia', serif;
+        }
+
+        .nav-item a:hover {
+            color: var(--light-brass);
+            text-shadow: 0 0 8px var(--shadow-color);
+        }
+
+        .nav-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-brass);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-banner {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid var(--primary-brass);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--shadow-color);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+            filter: sepia(20%) contrast(1.1) brightness(0.9);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                rgba(60, 36, 21, 0.7), 
+                rgba(184, 134, 11, 0.5),
+                rgba(74, 74, 74, 0.8)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--light-brass);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px var(--shadow-color);
+            line-height: 1.2;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--vintage-cream);
+            font-style: italic;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            color: var(--steam-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .image-caption {
+            background: rgba(60, 36, 21, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            text-align: center;
+            color: var(--light-brass);
+            border-top: 3px solid var(--primary-brass);
+        }
+
+        .image-caption p {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .image-caption small {
+            color: var(--vintage-cream);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .author-image {
+            position: relative;
+            display: inline-block;
+        }
+
+        .author-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-brass);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--shadow-color);
+            object-fit: cover;
+            display: block;
+            filter: sepia(10%) contrast(1.1);
+        }
+
+        /* Mobile view - show double ring with gear accent */
+        @media (max-width: 768px) {
+            .author-image::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+                border: 2px solid var(--secondary-copper);
+                border-radius: 50%;
+                opacity: 0.6;
+                box-shadow: 0 0 15px var(--shadow-color);
+            }
+        }
+
+        .book-cover img {
+            width: 150px;
+            height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            filter: sepia(10%) contrast(1.1);
+        }
+
+        /* Feature sections */
+        .content-section {
+            padding: 4rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--light-brass);
+            text-shadow: 0 0 15px var(--shadow-color);
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(60, 36, 21, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--primary-brass);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, var(--primary-brass), var(--secondary-copper), var(--primary-brass));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--shadow-color);
+            background: rgba(60, 36, 21, 0.95);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--light-brass);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        .feature-card h3 {
+            color: var(--light-brass);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .feature-note {
+            background: rgba(184, 134, 11, 0.2);
+            border-left: 4px solid var(--primary-brass);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: var(--vintage-cream);
+            border-top: 1px solid var(--primary-brass);
+            border-bottom: 1px solid var(--primary-brass);
+        }
+
+        /* About section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-content h3 {
+            color: var(--light-brass);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .about-content {
+            color: var(--vintage-cream);
+        }
+
+        /* Books showcase */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: rgba(60, 36, 21, 0.8);
+            border: 2px solid var(--primary-brass);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--shadow-color);
+            background: rgba(60, 36, 21, 0.95);
+        }
+
+        .book-cover {
+            width: 150px;
+            height: 200px;
+            margin: 0 auto 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--primary-brass);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .book-card h3 {
+            color: var(--light-brass);
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        .book-card p {
+            color: var(--vintage-cream);
+        }
+
+        /* Contact section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(60, 36, 21, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--primary-brass);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--shadow-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-brass);
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--primary-brass);
+            border-radius: 8px;
+            background: rgba(74, 74, 74, 0.8);
+            color: var(--vintage-cream);
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--light-brass);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-brass), var(--secondary-copper));
+            color: var(--text-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, var(--light-brass), var(--primary-brass));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-brown);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 3px solid var(--primary-brass);
+            margin-top: 4rem;
+            color: var(--vintage-cream);
+        }
+
+        .disclaimer {
+            background: var(--steel-gray);
+            border: 3px solid var(--primary-brass);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            font-size: 1rem;
+            color: var(--vintage-cream);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px var(--shadow-color);
+            position: relative;
+        }
+
+        .disclaimer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary-brass), var(--secondary-copper));
+            border-radius: 17px;
+            z-index: -1;
+        }
+
+        .disclaimer h4 {
+            color: var(--light-brass) !important;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Special steampunk touches */
+        .steampunk-accent {
+            position: relative;
+        }
+
+        .steampunk-accent::before {
+            content: '⚙';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            color: var(--gear-bronze);
+            font-size: 1.2rem;
+            opacity: 0.7;
+            animation: spin 8s infinite linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Victorian typography */
+        .victorian-text {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            color: var(--light-brass);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Steam effect */
+        .steam-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .steam-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(248, 248, 255, 0.1) 0%, transparent 50%);
+            animation: steam 6s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes steam {
+            0%, 100% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating gears background -->
+    <div class="floating-gears"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Your Author Brand</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#home">Home</a></li>
+                    <li class="nav-item"><a href="#books">Books</a></li>
+                    <li class="nav-item"><a href="#about">About</a></li>
+                    <li class="nav-item"><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-banner">
+                <img src="/assets/images/steampunk-banner.svg" alt="Steampunk website banner - Victorian industrial landscape with brass gears and steam">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <h1>Welcome to Your Website</h1>
+                        <p class="hero-subtitle">Where Gears Turn and Stories Unfold</p>
+                        <p class="hero-description">
+                            This is a base starting point that your website would begin with. We will then work together 
+                            to customize every element to fit YOU - your mechanical worlds, your Victorian adventures, 
+                            your unique voice as a steampunk author who crafts tales of brass and steam.
+                        </p>
+                    </div>
+                </div>
+                <div class="image-caption">
+                    <p><strong>Custom Banner Available</strong></p>
+                    <small>We can create a custom steampunk banner or you can provide your own. Victorian cityscapes, mechanical contraptions, or brass clockwork imagery make for compelling banners!</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="content-section" id="features">
+        <div class="section-container">
+            <h2 class="section-title">What's Included in Your Base Package</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Book Showcase</h3>
+                    <p>Professional displays for your steampunk novels with detailed descriptions, excerpts, and direct purchase links to major retailers like Amazon, Barnes & Noble, and Apple Books.</p>
+                    <div class="feature-note">
+                        <strong>Included:</strong> Book covers, compelling descriptions, retail links, genre tags, and unlimited additions as your catalog expands.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>Author Bio & Photo</h3>
+                    <p>Professional author profile that builds credibility with steampunk enthusiasts, showcasing your creative background and storytelling approach.</p>
+                    <div class="feature-note">
+                        <strong>Your Choice:</strong> Include your photo or go text-only - whatever suits your comfort. We craft compelling bio content that resonates with steampunk fiction readers.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Contact Form</h3>
+                    <p>Professional contact system for readers, industry professionals, and fellow authors to reach you easily.</p>
+                    <div class="feature-note">
+                        <strong>Fully Functional:</strong> Integrated contact form with spam protection and professional auto-responses.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📬</div>
+                    <h3>Newsletter Signup</h3>
+                    <p>Email list building integration with your preferred service to build your dedicated steampunk reader community from day one.</p>
+                    <div class="feature-note">
+                        <strong>Essential for Authors:</strong> Steampunk readers are passionate enthusiasts who value direct connection. Start building your reader community immediately.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile-Responsive Design</h3>
+                    <p>Your steampunk website looks excellent on every device - perfect for readers exploring your stories on any screen.</p>
+                    <div class="feature-note">
+                        <strong>Universal Appeal:</strong> Over 60% of readers browse on mobile devices. Your atmospheric site will engage readers on any screen size.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>SEO Setup & Launch Support</h3>
+                    <p>Search optimization to help readers discover your steampunk works, plus complete technical setup and training.</p>
+                    <div class="feature-note">
+                        <strong>Professional Launch:</strong> We handle the technical setup. You'll know exactly how to manage your site when new books are ready.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Features Section -->
+            <div style="margin: 4rem 0;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--light-brass); font-size: 2rem; font-weight: bold;">Optional Features to Enhance Your Website</h3>
+                <p style="text-align: center; margin-bottom: 3rem; color: var(--vintage-cream); max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Choose additional features based on your goals and where you are in your steampunk author journey. Every feature is designed to engage readers deeper with your Victorian-inspired stories.
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>Reader Reviews Section - $10</h3>
+                        <p>Dedicated space to showcase positive reader reviews and professional endorsements for your steampunk works.</p>
+                        <div class="feature-note">
+                            <strong>Great Value:</strong> Perfect for building credibility with new steampunk enthusiasts. Even 3-5 excellent reviews make a strong impression and boost book sales.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🗺️</div>
+                        <h3>World & Character Guide - $20</h3>
+                        <p>Dedicated pages for your steampunk world details, character profiles, technology systems, and story lore.</p>
+                        <div class="feature-note">
+                            <strong>Perfect for Steampunk:</strong> Give readers deeper world exploration! Character backgrounds, world-building details, and Victorian elements that steampunk fans love to discover.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Events Calendar - $20</h3>
+                        <p>Display book signings, steampunk conventions, maker faires, and promotional events.</p>
+                        <div class="feature-note">
+                            <strong>Perfect for:</strong> Authors actively attending steampunk conventions, maker events, or themed gatherings. Most valuable when you have events to promote.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✏️</div>
+                        <h3>Blog System - $25</h3>
+                        <p>Content management system for world-building posts, writing updates, and steampunk reader engagement.</p>
+                        <div class="feature-note">
+                            <strong>Best for:</strong> Authors planning to post regularly about steampunk themes and Victorian-inspired content. Improves SEO and builds reader connection.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🖼️</div>
+                        <h3>Photo Gallery - $30</h3>
+                        <p>Showcase book covers, convention photos, steampunk artwork, and promotional images.</p>
+                        <div class="feature-note">
+                            <strong>Best for:</strong> Established steampunk authors with visual content. Great for book covers, convention photos, themed artwork. Skip if limited visuals.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>Direct Book Sales - $45</h3>
+                        <p>Sell and ship signed copies, special editions, or merchandise directly from your website. You handle inventory and shipping.</p>
+                        <div class="feature-note">
+                            <strong>Advanced Feature:</strong> For authors ready to manage direct sales. Perfect for offering exclusive signed copies or limited editions fans can't get on Amazon.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 3rem 0;">
+                <div style="background: rgba(60, 36, 21, 0.8); border: 2px solid var(--primary-brass); border-radius: 15px; padding: 2rem; max-width: 800px; margin: 0 auto; box-shadow: 0 0 20px var(--shadow-color);">
+                    <h3 style="color: var(--light-brass); margin-bottom: 1rem; font-family: Georgia, serif; font-weight: bold;">Single Page vs Multi-Page Website Options</h3>
+                    <p style="margin-bottom: 1rem; color: var(--vintage-cream);">You can choose to have your website as a <strong>single scrolling page</strong> (like this demo) where all content flows seamlessly, or as a <strong>traditional multi-page website</strong> with separate chambers.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; text-align: left;">
+                        <div>
+                            <h4 style="color: var(--light-brass); margin-bottom: 0.5rem;">📜 Single Page Layout</h4>
+                            <ul style="margin-left: 1rem; color: var(--vintage-cream);">
+                                <li>All content on one mechanical scrolling page</li>
+                                <li>Smooth navigation between sections</li>
+                                <li>Perfect for mobile steampunk readers</li>
+                                <li>Quick to load and explore</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--light-brass); margin-bottom: 0.5rem;">📖 Multi-Page Layout</h4>
+                            <ul style="margin-left: 1rem; color: var(--vintage-cream);">
+                                <li>Separate chambers: Home, Books, About, Contact</li>
+                                <li>More space for detailed steampunk content</li>
+                                <li>Traditional Victorian structure</li>
+                                <li>Ideal for extensive mechanical series</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.5rem; font-style: italic; color: var(--light-brass);">We'll help you decide which configuration works best for your steampunk brand and reader engagement goals during our consultation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="content-section" id="books">
+        <div class="section-container">
+            <h2 class="section-title">Your Steampunk Showcase</h2>
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.1rem; color: var(--vintage-cream); max-width: 800px; margin-left: auto; margin-right: auto;">
+                This section will feature YOUR actual steampunk novels with your real covers, mechanical descriptions, purchase links, and any additional information you want to share with steampunk readers.
+            </p>
+            <div class="books-grid">
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/steampunk-book-1.svg" alt="Example steampunk book cover">
+                    </div>
+                    <h3 style="color: var(--light-brass);">Your First Steampunk Title</h3>
+                    <p>Your actual book description and mechanical summary will be displayed here, exactly as you want steampunk readers to be drawn into your Victorian world.</p>
+                    <div class="feature-note">
+                        <strong>What We Include:</strong> Brass-framed book cover display, compelling description, purchase links to steampunk retailers, Victorian complexity ratings, and reader reviews.
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/steampunk-book-2.svg" alt="Example steampunk book cover">
+                    </div>
+                    <h3 style="color: var(--light-brass);">Your Second Steampunk Title</h3>
+                    <p>Each steampunk novel gets its own dedicated space with all the mechanical details potential readers need to discover your brass and steam stories.</p>
+                    <div class="feature-note">
+                        <strong>Steampunk Features:</strong> Genre tags, series information, character inventions, and mechanical hooks that steampunk readers love to discover.
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/steampunk-book-3.svg" alt="Example steampunk book cover">
+                    </div>
+                    <h3 style="color: var(--light-brass);">Upcoming Releases</h3>
+                    <p>Showcase upcoming steampunk releases, works in progress, or teasers to keep your mechanical readers eagerly anticipating your next Victorian adventure.</p>
+                    <div class="feature-note">
+                        <strong>Future Mechanics:</strong> Include release dates, pre-order links, invention reveals, or sneak peeks for upcoming steampunk adventures.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="content-section" id="about">
+        <div class="section-container">
+            <h2 class="section-title">About You - The Steampunk Author</h2>
+            <div class="about-grid">
+                <div>
+                    <div class="author-image">
+                        <img src="/assets/images/steampunk-author.svg" alt="Steampunk author photo placeholder">
+                    </div>
+                    <div class="feature-note" style="margin-top: 1rem;">
+                        <strong>Your Photo:</strong> You can provide your own distinguished author photo, or leave this space for just your written bio - completely your choice for your comfort.
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>Your Steampunk Author Story Goes Here</h3>
+                    <p>
+                        This is where YOUR actual biography, steampunk writing journey, and personal story will be featured. 
+                        We'll work with you to craft compelling content that connects with steampunk readers and 
+                        establishes your credibility as an author who understands Victorian innovation, mechanical wonder, and brass-crafted adventure.
+                    </p>
+                    <p>
+                        Whether you want to share what inspired you to write steampunk fiction, your favorite mechanical elements, 
+                        your world-building process, or what drives you to create the inventive stories that blend history with imagination - 
+                        this section will be completely customized to represent YOU authentically to your steampunk audience.
+                    </p>
+                    <div class="feature-note">
+                        <strong>What We Help With:</strong> We can assist with writing your steampunk bio, organizing your achievements, highlighting your credentials, and presenting your story in a way that resonates with Victorian fiction readers.
+                    </div>
+                    <div class="feature-note" style="margin-top: 1rem;">
+                        <strong>Optional Mechanical Gallery Images:</strong> If you select our gallery images feature, we can create steampunk AI-generated artwork that conveys the mood and mechanical wonder of your Victorian novels.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="content-section" id="contact">
+        <div class="section-container">
+            <h2 class="section-title">Connect With Me</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+                <div class="feature-note" style="margin-top: 1rem;">
+                    <strong>Functional Forms:</strong> Your contact form will be fully functional and can integrate with your preferred email system or reader management platform.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Demo Controls -->
+    <section class="content-section">
+        <div class="section-container">
+            <div class="demo-controls">
+                <h3>Ready to Get Started?</h3>
+                <div class="action-buttons">
+                    <button class="action-btn btn-primary" onclick="chooseTheme()">Choose This Theme</button>
+                    <button class="action-btn btn-secondary" onclick="exploreMore()">Explore More Themes</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="disclaimer">
+                <h4 style="color: var(--light-brass); margin-bottom: 0.5rem; font-weight: bold;">⚠️ Important: AI Image Disclaimer</h4>
+                <p style="margin: 0; font-weight: 500; line-height: 1.6;">
+                    <strong>All images shown in this demo are AI-generated for demonstration purposes only.</strong> 
+                    If you choose to have Page & Pixel Designs provide images for your website, 
+                    they will be created using AI tools and will be unique to your project. 
+                    You may also provide your own images if preferred.
+                </p>
+            </div>
+            <p>&copy; 2025 Your Author Website - Steampunk Theme Demo by Page & Pixel Designs</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">This demo showcases the Steampunk theme with Victorian elements and brass and copper tones</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating gears
+        function createFloatingGears() {
+            const gearsContainer = document.querySelector('.floating-gears');
+            const gearCount = 12;
+            
+            for (let i = 0; i < gearCount; i++) {
+                const gear = document.createElement('div');
+                gear.className = 'gear';
+                gear.style.left = Math.random() * 100 + '%';
+                gear.style.animationDelay = Math.random() * 10 + 's';
+                gear.style.animationDuration = (8 + Math.random() * 4) + 's';
+                gearsContainer.appendChild(gear);
+            }
+        }
+
+        // Choose this theme - redirect to services with theme selected
+        function chooseTheme() {
+            console.log('🎨 Starting theme selection process...');
+            
+            // Clear any existing theme selections first
+            sessionStorage.removeItem('selectedTheme');
+            localStorage.removeItem('selectedTheme');
+            
+            // Set the selected theme in multiple ways for maximum compatibility
+            sessionStorage.setItem('selectedTheme', 'steampunk');
+            localStorage.setItem('selectedTheme', 'steampunk');
+            
+            // Also set it in a way the services page definitely expects
+            sessionStorage.setItem('pagePixelSelectedTheme', 'steampunk');
+            
+            // Add timestamp to help debug timing issues
+            sessionStorage.setItem('themeSelectionTime', new Date().toISOString());
+            
+            // Store theme info that won't be cleared
+            localStorage.setItem('lastSelectedTheme', 'steampunk');
+            localStorage.setItem('lastThemeSelectionTime', new Date().toISOString());
+            
+            console.log('✅ Theme storage set:');
+            console.log('   sessionStorage.selectedTheme:', sessionStorage.getItem('selectedTheme'));
+            console.log('   localStorage.selectedTheme:', localStorage.getItem('selectedTheme'));
+            console.log('   sessionStorage.pagePixelSelectedTheme:', sessionStorage.getItem('pagePixelSelectedTheme'));
+            
+            // Test that we can read it back
+            const testRead = sessionStorage.getItem('selectedTheme');
+            if (testRead === 'steampunk') {
+                console.log('✅ Storage test passed - theme can be read back');
+            } else {
+                console.error('❌ Storage test failed - could not read back theme');
+            }
+            
+            // Add visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Redirecting...';
+            button.style.transform = 'scale(0.95)';
+            
+            // Visual confirmation
+            const confirmation = document.createElement('div');
+            confirmation.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-brass);
+                color: var(--text-dark);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 10000;
+                font-weight: bold;
+                box-shadow: 0 8px 25px var(--shadow-color);
+                border: 2px solid var(--dark-brass);
+            `;
+            confirmation.textContent = '✓ Steampunk Theme Selected - Redirecting...';
+            document.body.appendChild(confirmation);
+            
+            // Redirect with a slight delay to ensure storage is set
+            setTimeout(() => {
+                console.log('🔄 Redirecting to services page...');
+                // Add URL parameter to help services page detect the selection
+                window.location.href = '/services/?theme=steampunk&from=demo';
+            }, 800);
+        }
+
+        // Explore more themes - redirect back to themes page
+        function exploreMore() {
+            console.log('Returning to themes page from Steampunk demo...');
+            
+            // Add visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Loading...';
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                // Redirect back to themes page with a parameter to scroll to steampunk theme
+                window.location.href = '/themes/?viewed=steampunk';
+            }, 300);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingGears();
+            
+            // Debug: Check if we have any stored themes when page loads
+            console.log('🔍 Steampunk Demo Page Loaded - Checking stored themes:');
+            console.log('   sessionStorage.selectedTheme:', sessionStorage.getItem('selectedTheme'));
+            console.log('   localStorage.selectedTheme:', localStorage.getItem('selectedTheme'));
+            
+            // Add entrance animations
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            console.log('✅ Steampunk theme demo loaded successfully!');
+        });
+
+        // Prevent form submission (demo only)
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('This is a demo form. In your actual website, this would send your message!');
+        });
+
+        // Ensure theme selection is preserved during navigation
+        window.addEventListener('beforeunload', function() {
+            // Make sure theme selection is still stored
+            if (!sessionStorage.getItem('selectedTheme')) {
+                console.log('🔄 Re-storing theme selection before page unload');
+                sessionStorage.setItem('selectedTheme', 'steampunk');
+            }
+        });
+
+        // Add steampunk hover effects
+        document.querySelectorAll('.feature-card, .book-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add gear spinning effects to certain elements
+        document.querySelectorAll('.steampunk-accent').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                const gear = this.querySelector('::before');
+                if (gear) {
+                    gear.style.animationDuration = '1s';
+                }
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                const gear = this.querySelector('::before');
+                if (gear) {
+                    gear.style.animationDuration = '8s';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

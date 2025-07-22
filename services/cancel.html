@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Canceled - Page and Pixel Designs</title>
+    <meta name="description" content="Payment was canceled. No worries! Your package selections are saved and you can try again anytime or schedule a consultation.">
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <style>
+        .cancel-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .cancel-icon {
+            font-size: 4rem;
+            color: var(--primary-orange);
+            margin-bottom: 2rem;
+            animation: gentle-pulse 2s infinite;
+        }
+        
+        @keyframes gentle-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+        
+        .cancel-header {
+            color: var(--secondary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cancel-message {
+            font-size: 1.2rem;
+            color: var(--dark-text);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        .package-saved-notice {
+            background: rgba(255, 171, 2, 0.1);
+            border: 2px solid var(--primary-orange);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .package-saved-notice h3 {
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .package-saved-notice p {
+            margin: 0;
+            color: var(--dark-text);
+            font-size: 1.1rem;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .option-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .option-card h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .option-card p {
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        .option-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .primary-btn {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 171, 2, 0.3);
+        }
+        
+        .secondary-btn {
+            background: white;
+            color: var(--secondary-blue);
+            border: 2px solid var(--secondary-blue);
+        }
+        
+        .secondary-btn:hover {
+            background: var(--secondary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .consultation-btn {
+            background: var(--gradient-secondary);
+            color: white;
+        }
+        
+        .consultation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(58, 123, 211, 0.3);
+        }
+        
+        .reassurance {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+        }
+        
+        .reassurance h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .reassurance-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .reassurance-point {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+        }
+        
+        .reassurance-icon {
+            font-size: 1.2rem;
+            color: var(--primary-orange);
+            flex-shrink: 0;
+        }
+        
+        .contact-support {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(58, 123, 211, 0.1);
+            border-radius: 15px;
+        }
+        
+        .contact-support h4 {
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-support p {
+            margin: 0.5rem 0;
+            color: var(--dark-text);
+        }
+        
+        .support-email {
+            color: var(--secondary-blue);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .support-email:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .cancel-header {
+                font-size: 2rem;
+            }
+            
+            .cancel-message {
+                font-size: 1.1rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reassurance-points {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cancel-container {
+                padding: 3rem 1rem;
+            }
+            
+            .cancel-header {
+                font-size: 1.8rem;
+            }
+            
+            .option-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Page & Pixel Designs</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/services/">Services</a></li>
+                <li><a href="/themes/">Themes</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        <div class="cancel-container">
+            <div class="cancel-icon">⏸️</div>
+            <h1 class="cancel-header">Payment Paused</h1>
+            <p class="cancel-message">
+                No worries! Your payment was canceled and no charges were made. We understand that choosing the right website package is an important decision.
+            </p>
+
+            <!-- Package Saved Notice -->
+            <div class="package-saved-notice">
+                <h3>📦 Your Package Selections Are Saved!</h3>
+                <p>We've automatically saved your package configuration so you can pick up right where you left off when you're ready.</p>
+            </div>
+
+            <!-- Options -->
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-icon">🔄</div>
+                    <h3>Try Payment Again</h3>
+                    <p>Ready to proceed? Your package selections are saved and waiting for you.</p>
+                    <a href="/services/" class="option-btn primary-btn">Return to Services</a>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon">🤝</div>
+                    <h3>Schedule a Consultation</h3>
+                    <p>Have questions or want to discuss your project first? Let's chat!</p>
+                    <a href="/contact/" class="option-btn consultation-btn">Schedule Consultation</a>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon">🎨</div>
+                    <h3>Browse Themes</h3>
+                    <p>Want to explore more design options before deciding?</p>
+                    <a href="/themes/" class="option-btn secondary-btn">Browse Themes</a>
+                </div>
+            </div>
+
+            <!-- Reassurance Section -->
+            <div class="reassurance">
+                <h3>Why Authors Choose Page & Pixel Designs</h3>
+                <div class="reassurance-points">
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">💰</span>
+                        <span>Never more than $200 total</span>
+                    </div>
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">🔒</span>
+                        <span>Secure payment processing</span>
+                    </div>
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">↩️</span>
+                        <span>Full refund guarantee</span>
+                    </div>
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">⚡</span>
+                        <span>24-hour response time</span>
+                    </div>
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">🤝</span>
+                        <span>Collaborative design process</span>
+                    </div>
+                    <div class="reassurance-point">
+                        <span class="reassurance-icon">📚</span>
+                        <span>Built specifically for authors</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="contact-support">
+                <h4>Questions or Need Help?</h4>
+                <p>We're here to help! Reach out if you have any questions about our process, pricing, or features.</p>
+                <p><strong>Email:</strong> <a href="mailto:info@pageandpixeldesigns.com" class="support-email">info@pageandpixeldesigns.com</a></p>
+                <p><strong>Response Time:</strong> Within 24-48 hours</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Check if user has saved package and show appropriate message
+        function checkSavedPackage() {
+            const savedPackage = localStorage.getItem('pagePixelPackage');
+            if (savedPackage) {
+                try {
+                    const packageData = JSON.parse(savedPackage);
+                    console.log('📦 Saved package found:', packageData);
+                    
+                    // Package is already saved, no additional action needed
+                    // The notice is already shown in the HTML
+                } catch (e) {
+                    console.log('Error parsing saved package:', e);
+                }
+            } else {
+                // Hide the package saved notice if no package is saved
+                const notice = document.querySelector('.package-saved-notice');
+                if (notice) {
+                    notice.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSavedPackage();
+        });
+
+        // Make functions globally available
+        window.toggleMobileMenu = toggleMobileMenu;
+    </script>
+</body>
+</html>

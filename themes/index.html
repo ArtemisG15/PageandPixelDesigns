@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Themes - Choose Your Perfect Author Website Style</title>
+    <meta name="description" content="Browse our genre-specific website themes for indie authors. From high fantasy to contemporary romance - find the perfect style for your books.">
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/auth-components.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Page & Pixel Designs</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/services/">Services</a></li>
+                <li><a href="/themes/" class="active">Themes</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <!-- Authentication Modal -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+    <div class="auth-modal-content">
+        <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+        
+        <!-- Sign In Form -->
+        <div id="signInForm" class="auth-form active">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your author dashboard</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signInError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Don't have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignUp()">
+                Create Account
+            </button>
+        </div>
+        
+        <!-- Sign Up Form -->
+        <div id="signUpForm" class="auth-form">
+            <div class="auth-header">
+                <h2>Create Your Account</h2>
+                <p>Start building your author platform today</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignUp(event)">
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpEmail">Email Address</label>
+                    <input type="email" id="signUpEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required minlength="8">
+                    <small>At least 8 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpConfirm">Confirm Password</label>
+                    <input type="password" id="signUpConfirm" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signUpTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signUpError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignIn()">
+                Sign In Instead
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="authNotification" class="auth-notification" style="display: none;">
+    <div class="notification-content">
+        <span class="notification-icon">✅</span>
+        <span class="notification-message"></span>
+    </div>
+</div>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="themes-hero">
+                <div class="hero-content">
+                    <h1>Choose Your Perfect Theme</h1>
+                    <p class="hero-subtitle">Each theme is crafted specifically for your genre, creating an immersive experience that connects with your readers from the moment they arrive.</p>
+                    <div class="hero-features">
+                        <div class="feature-badge">
+                            <span class="badge-icon">🎨</span>
+                            <span>Genre-Specific Design</span>
+                        </div>
+                        <div class="feature-badge">
+                            <span class="badge-icon">📱</span>
+                            <span>Mobile-Responsive</span>
+                        </div>
+                        <div class="feature-badge">
+                            <span class="badge-icon">✨</span>
+                            <span>Included in Base Price</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Theme Showcase -->
+            <section class="theme-showcase">
+                <div class="showcase-intro">
+                    <h2>Immerse Your Readers in Your World</h2>
+                    <p>Click on any theme to see it come to life. Each design captures the essence of your genre and creates an emotional connection with your audience.</p>
+                </div>
+
+                <!-- Fantasy Theme -->
+                <div class="theme-section fantasy-theme" data-theme="fantasy">
+                    <div class="theme-preview">
+                        <div class="preview-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">yourauthor.com</div>
+                            </div>
+                            <div class="preview-content fantasy-preview">
+                                <div class="preview-nav">
+                                    <div class="preview-logo">Elena Stormweaver</div>
+                                    <div class="preview-menu">
+                                        <span>Books</span>
+                                        <span>About</span>
+                                        <span>Magic</span>
+                                    </div>
+                                </div>
+                                <div class="preview-hero">
+                                    <h3>Chronicles of the Eternal Realm</h3>
+                                    <p>Where ancient magic meets destiny</p>
+                                    <div class="preview-cta">Enter the Realm</div>
+                                </div>
+                                <div class="preview-books">
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                </div>
+                                <div class="fantasy-particles">
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-details">
+                        <div class="theme-header">
+                            <h3>High Fantasy</h3>
+                            <div class="theme-tags">
+                                <span class="tag">Epic Fantasy</span>
+                                <span class="tag">Urban Fantasy</span>
+                                <span class="tag">Mythology</span>
+                            </div>
+                        </div>
+                        <p>Rich purples and mystical golds create an otherworldly atmosphere. Subtle animations and magical flourishes transport visitors directly into your fantasy realm.</p>
+                        <div class="theme-features">
+                            <div class="feature">✨ Enchanted color palettes</div>
+                            <div class="feature">🏰 Medieval-inspired typography</div>
+                            <div class="feature">⚡ Magical particle effects</div>
+                            <div class="feature">📜 Scrolling text reveals</div>
+                        </div>
+                        <div class="theme-actions">
+                            <button class="view-demo-btn" data-theme="fantasy">View Live Demo</button>
+                            <button class="select-theme-btn" data-theme="fantasy">Choose Fantasy Theme</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Romance Theme -->
+                <div class="theme-section romance-theme" data-theme="romance">
+                    <div class="theme-preview">
+                        <div class="preview-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">yourauthor.com</div>
+                            </div>
+                            <div class="preview-content romance-preview">
+                                <div class="preview-nav">
+                                    <div class="preview-logo">Sophia Heart</div>
+                                    <div class="preview-menu">
+                                        <span>Books</span>
+                                        <span>About</span>
+                                        <span>Blog</span>
+                                    </div>
+                                </div>
+                                <div class="preview-hero">
+                                    <h3>Love Stories That Touch the Soul</h3>
+                                    <p>Contemporary romance for the modern heart</p>
+                                    <div class="preview-cta">Discover Love</div>
+                                </div>
+                                <div class="preview-books">
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                </div>
+                                <div class="romance-hearts">
+                                    <div class="heart">♡</div>
+                                    <div class="heart">♡</div>
+                                    <div class="heart">♡</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-details">
+                        <div class="theme-header">
+                            <h3>Romance</h3>
+                            <div class="theme-tags">
+                                <span class="tag">Contemporary</span>
+                                <span class="tag">Historical</span>
+                                <span class="tag">Paranormal</span>
+                            </div>
+                        </div>
+                        <p>Soft pinks, warm roses, and elegant typography create an intimate, welcoming atmosphere that draws readers into your romantic worlds.</p>
+                        <div class="theme-features">
+                            <div class="feature">💕 Romantic color gradients</div>
+                            <div class="feature">🌸 Delicate floral accents</div>
+                            <div class="feature">💌 Elegant script fonts</div>
+                            <div class="feature">✨ Gentle hover animations</div>
+                        </div>
+                        <div class="theme-actions">
+                            <button class="view-demo-btn" data-theme="romance">View Live Demo</button>
+                            <button class="select-theme-btn" data-theme="romance">Choose Romance Theme</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apocalypse Theme -->
+                <div class="theme-section apocalypse-theme" data-theme="apocalypse">
+                    <div class="theme-preview">
+                        <div class="preview-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">yourauthor.com</div>
+                            </div>
+                            <div class="preview-content apocalypse-preview">
+                                <div class="preview-nav">
+                                    <div class="preview-logo">M. Blackwood</div>
+                                    <div class="preview-menu">
+                                        <span>Books</span>
+                                        <span>Worlds</span>
+                                        <span>Survival</span>
+                                    </div>
+                                </div>
+                                <div class="preview-hero">
+                                    <h3>When the World Ends, Stories Begin</h3>
+                                    <p>Dystopian tales of survival and hope</p>
+                                    <div class="preview-cta">Enter the Wasteland</div>
+                                </div>
+                                <div class="preview-books">
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                </div>
+                                <div class="apocalypse-effects">
+                                    <div class="ash"></div>
+                                    <div class="ash"></div>
+                                    <div class="ash"></div>
+                                    <div class="lightning"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-details">
+                        <div class="theme-header">
+                            <h3>Apocalypse</h3>
+                            <div class="theme-tags">
+                                <span class="tag">Dystopian</span>
+                                <span class="tag">Post-Apocalyptic</span>
+                                <span class="tag">Survival</span>
+                            </div>
+                        </div>
+                        <p>Dark grays, haunting reds, and industrial elements create a gritty, atmospheric experience that perfectly captures dystopian and post-apocalyptic narratives.</p>
+                        <div class="theme-features">
+                            <div class="feature">🔥 Dark, atmospheric colors</div>
+                            <div class="feature">⚡ Lightning text effects</div>
+                            <div class="feature">🌆 Industrial typography</div>
+                            <div class="feature">💀 Weathered textures</div>
+                        </div>
+                        <div class="theme-actions">
+                            <button class="view-demo-btn" data-theme="apocalypse">View Live Demo</button>
+                            <button class="select-theme-btn" data-theme="apocalypse">Choose Apocalypse Theme</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Steampunk Theme -->
+                <div class="theme-section steampunk-theme" data-theme="steampunk">
+                    <div class="theme-preview">
+                        <div class="preview-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">yourauthor.com</div>
+                            </div>
+                            <div class="preview-content steampunk-preview">
+                                <div class="preview-nav">
+                                    <div class="preview-logo">A. Cogsworth</div>
+                                    <div class="preview-menu">
+                                        <span>Inventions</span>
+                                        <span>Chronicles</span>
+                                        <span>Workshop</span>
+                                    </div>
+                                </div>
+                                <div class="preview-hero">
+                                    <h3>Clockwork Dreams & Steam-Powered Adventures</h3>
+                                    <p>Victorian innovation meets mechanical wonder</p>
+                                    <div class="preview-cta">Explore the Workshop</div>
+                                </div>
+                                <div class="preview-books">
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                </div>
+                                <div class="steampunk-gears">
+                                    <div class="gear gear-1">⚙</div>
+                                    <div class="gear gear-2">⚙</div>
+                                    <div class="gear gear-3">⚙</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-details">
+                        <div class="theme-header">
+                            <h3>Steampunk</h3>
+                            <div class="theme-tags">
+                                <span class="tag">Victorian</span>
+                                <span class="tag">Alternative History</span>
+                                <span class="tag">Adventure</span>
+                            </div>
+                        </div>
+                        <p>Rich brass tones, copper accents, and Victorian elegance combine with mechanical elements to create an authentic steampunk atmosphere.</p>
+                        <div class="theme-features">
+                            <div class="feature">⚙️ Animated gear elements</div>
+                            <div class="feature">🎩 Victorian typography</div>
+                            <div class="feature">🔧 Brass & copper palette</div>
+                            <div class="feature">💨 Steam effect animations</div>
+                        </div>
+                        <div class="theme-actions">
+                            <button class="view-demo-btn" data-theme="steampunk">View Live Demo</button>
+                            <button class="select-theme-btn" data-theme="steampunk">Choose Steampunk Theme</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drama Theme -->
+                <div class="theme-section drama-theme" data-theme="drama">
+                    <div class="theme-preview">
+                        <div class="preview-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-url">yourauthor.com</div>
+                            </div>
+                            <div class="preview-content drama-preview">
+                                <div class="preview-nav">
+                                    <div class="preview-logo">J. Mitchell</div>
+                                    <div class="preview-menu">
+                                        <span>Novels</span>
+                                        <span>Stories</span>
+                                        <span>Contact</span>
+                                    </div>
+                                </div>
+                                <div class="preview-hero">
+                                    <h3>Stories That Mirror Life</h3>
+                                    <p>Contemporary fiction for the thoughtful reader</p>
+                                    <div class="preview-cta">Read Stories</div>
+                                </div>
+                                <div class="preview-books">
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                    <div class="preview-book"></div>
+                                </div>
+                                <div class="drama-lines">
+                                    <div class="line"></div>
+                                    <div class="line"></div>
+                                    <div class="line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-details">
+                        <div class="theme-header">
+                            <h3>Contemporary Drama</h3>
+                            <div class="theme-tags">
+                                <span class="tag">Literary Fiction</span>
+                                <span class="tag">Drama</span>
+                                <span class="tag">Contemporary</span>
+                            </div>
+                        </div>
+                        <p>Clean lines, sophisticated typography, and thoughtful use of white space create an elegant, professional atmosphere perfect for serious literary works.</p>
+                        <div class="theme-features">
+                            <div class="feature">📖 Clean, readable typography</div>
+                            <div class="feature">🎭 Sophisticated color scheme</div>
+                            <div class="feature">✨ Subtle animations</div>
+                            <div class="feature">🖼️ Focus on content</div>
+                        </div>
+                        <div class="theme-actions">
+                            <button class="view-demo-btn" data-theme="drama">View Live Demo</button>
+                            <button class="select-theme-btn" data-theme="drama">Choose Drama Theme</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Custom Theme Section -->
+            <section class="custom-theme-section">
+                <div class="custom-content">
+                    <div class="custom-info">
+                        <h2>Don't See Your Genre?</h2>
+                        <p>We love creating unique themes! Whether you write horror, sci-fi, mystery, young adult, or something completely different, we can craft a custom theme that perfectly captures your story's essence.</p>
+                        <div class="custom-features">
+                            <div class="custom-feature">
+                                <span class="feature-icon">🎨</span>
+                                <div>
+                                    <h4>Completely Custom Design</h4>
+                                    <p>Built specifically for your genre and style</p>
+                                </div>
+                            </div>
+                            <div class="custom-feature">
+                                <span class="feature-icon">🤝</span>
+                                <div>
+                                    <h4>Collaborative Process</h4>
+                                    <p>We work with you to bring your vision to life</p>
+                                </div>
+                            </div>
+                            <div class="custom-feature">
+                                <span class="feature-icon">💰</span>
+                                <div>
+                                    <h4>Same Great Pricing</h4>
+                                    <p>Custom themes included in your base $50</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="custom-examples">
+                        <h3>Recently Created Custom Themes</h3>
+                        <div class="custom-showcase">
+                            <div class="custom-example">
+                                <div class="example-preview horror-preview"></div>
+                                <span>Horror</span>
+                            </div>
+                            <div class="custom-example">
+                                <div class="example-preview scifi-preview"></div>
+                                <span>Sci-Fi</span>
+                            </div>
+                            <div class="custom-example">
+                                <div class="example-preview mystery-preview"></div>
+                                <span>Mystery</span>
+                            </div>
+                            <div class="custom-example">
+                                <div class="example-preview ya-preview"></div>
+                                <span>Young Adult</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="themes-cta">
+                <div class="cta-content">
+                    <h2>Ready to Build Your Website?</h2>
+                    <p>Choose your theme and start building your perfect author platform. Remember: themes are included in your base $50, and your total will never exceed $200.</p>
+                    <div class="cta-buttons">
+                        <a href="/services/" class="cta-button">Build Your Package</a>
+                        <a href="/contact/" class="cta-button-secondary">Discuss Custom Theme</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Theme Selection Modal -->
+    <div class="theme-modal" id="themeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Perfect Choice!</h3>
+                <button class="close-modal" onclick="closeThemeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>You've selected the <strong id="selectedThemeName"></strong> theme. Ready to build your complete website package?</p>
+                <div class="theme-reminder">
+                    <div class="reminder-item">
+                        <span class="reminder-icon">✅</span>
+                        <span>Theme included in base $50</span>
+                    </div>
+                    <div class="reminder-item">
+                        <span class="reminder-icon">⚡</span>
+                        <span>Add optional features</span>
+                    </div>
+                    <div class="reminder-item">
+                        <span class="reminder-icon">🔒</span>
+                        <span>$200 maximum guarantee</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="/services/" class="cta-button">Build Your Package</a>
+                <button class="cta-button-secondary" onclick="closeThemeModal()">Keep Browsing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth-system.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apocalypse Theme Demo - Page & Pixel Designs</title>
+    <style>
+        :root {
+            --primary-rust: #c14242;
+            --secondary-rust: #d2691e;
+            --accent-amber: #ffb347;
+            --dark-charcoal: #1a1a1a;
+            --medium-gray: #2d2d2d;
+            --light-ash: #b8b8b8;
+            --burnt-orange: #cc5500;
+            --deep-red: #8b0000;
+            --weathered-white: #f5f5dc;
+            --toxic-green: #32cd32;
+            --shadow-color: rgba(193, 66, 66, 0.4);
+            --text-light: #f5f5dc;
+            --text-dark: #1a1a1a;
+            --gradient-start: #1a1a1a;
+            --gradient-end: #2d2d2d;
+            --glow-effect: rgba(255, 179, 71, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', 'Monaco', monospace;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Post-apocalyptic ash particles animation */
+        .floating-ash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ash {
+            position: absolute;
+            background: rgba(184, 184, 184, 0.3);
+            border-radius: 50%;
+            animation: floatAsh 12s infinite linear;
+        }
+
+        @keyframes floatAsh {
+            0% { 
+                transform: translateY(-10px) translateX(0) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.7; 
+            }
+            90% { 
+                opacity: 0.7; 
+            }
+            100% { 
+                transform: translateY(100vh) translateX(50px) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* Demo controls */
+        .demo-controls {
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid var(--primary-rust);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 0 20px var(--glow-effect);
+        }
+
+        .demo-controls h3 {
+            color: var(--accent-amber);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--glow-effect);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-rust), var(--burnt-orange));
+            color: var(--weathered-white);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            border: 1px solid var(--accent-amber);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--deep-red), var(--primary-rust));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px var(--shadow-color), 0 0 15px var(--glow-effect);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-amber);
+            border: 2px solid var(--primary-rust);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-rust);
+            color: var(--weathered-white);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--glow-effect);
+        }
+
+        /* Header/Navigation */
+        .header {
+            position: relative;
+            padding: 1rem 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-rust);
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-amber);
+            text-shadow: 0 0 10px var(--glow-effect);
+            font-family: 'Courier New', monospace;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item a {
+            color: var(--light-ash);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-item a:hover {
+            color: var(--accent-amber);
+            text-shadow: 0 0 8px var(--glow-effect);
+        }
+
+        .nav-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-rust);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-banner {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid var(--primary-rust);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--glow-effect);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.2) brightness(0.8);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                rgba(26, 26, 26, 0.7), 
+                rgba(193, 66, 66, 0.6),
+                rgba(139, 0, 0, 0.8)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Mobile view - move text up */
+        @media (max-width: 768px) {
+            .hero-overlay {
+                align-items: flex-start;
+                padding: 3rem 2rem 2rem 2rem;
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--weathered-white);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px var(--glow-effect);
+            line-height: 1.2;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--accent-amber);
+            font-style: italic;
+            font-weight: 300;
+            text-shadow: 0 0 10px var(--glow-effect);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            color: var(--weathered-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-amber), var(--secondary-rust));
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 179, 71, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--primary-rust);
+        }
+
+        .hero-cta:hover {
+            background: linear-gradient(135deg, var(--secondary-rust), var(--accent-amber));
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 179, 71, 0.6), 0 0 20px var(--glow-effect);
+        }
+
+        .image-caption {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            text-align: center;
+            color: var(--accent-amber);
+            border-top: 2px solid var(--primary-rust);
+        }
+
+        .image-caption p {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .image-caption small {
+            color: var(--light-ash);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .author-image {
+            position: relative;
+            display: inline-block;
+        }
+
+        .author-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-rust);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--glow-effect);
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.1) brightness(0.9);
+        }
+
+        /* Mobile view - show double ring with glow effect */
+        @media (max-width: 768px) {
+            .author-image::before {
+                content: '';
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+                border: 2px solid var(--accent-amber);
+                border-radius: 50%;
+                opacity: 0.6;
+                box-shadow: 0 0 15px var(--glow-effect);
+            }
+        }
+
+        .book-cover img {
+            width: 150px;
+            height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            filter: contrast(1.1) brightness(0.9);
+        }
+
+        /* Feature sections */
+        .content-section {
+            padding: 4rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--accent-amber);
+            text-shadow: 0 0 15px var(--glow-effect);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--primary-rust);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--glow-effect);
+            border-color: var(--accent-amber);
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--accent-amber);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--glow-effect);
+        }
+
+        .feature-card h3 {
+            color: var(--accent-amber);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-note {
+            background: rgba(193, 66, 66, 0.2);
+            border-left: 4px solid var(--primary-rust);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: var(--light-ash);
+            border-top: 1px solid var(--primary-rust);
+            border-bottom: 1px solid var(--primary-rust);
+        }
+
+        /* About section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-content h3 {
+            color: var(--accent-amber);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-content {
+            color: var(--light-ash);
+        }
+
+        /* Books showcase */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .book-card {
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--primary-rust);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--glow-effect);
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .book-cover {
+            width: 150px;
+            height: 200px;
+            margin: 0 auto 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--primary-rust);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .book-card h3 {
+            color: var(--accent-amber);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .book-card p {
+            color: var(--light-ash);
+        }
+
+        /* Contact section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--primary-rust);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-effect);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-amber);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--primary-rust);
+            border-radius: 8px;
+            background: rgba(45, 45, 45, 0.9);
+            color: var(--weathered-white);
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 15px var(--glow-effect);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-rust), var(--burnt-orange));
+            color: var(--weathered-white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, var(--deep-red), var(--primary-rust));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-color), 0 0 15px var(--glow-effect);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-charcoal);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 2px solid var(--primary-rust);
+            margin-top: 4rem;
+            color: var(--light-ash);
+        }
+
+        .disclaimer {
+            background: var(--medium-gray);
+            border: 3px solid var(--primary-rust);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            font-size: 1rem;
+            color: var(--light-ash);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-effect);
+            position: relative;
+        }
+
+        .disclaimer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary-rust), var(--accent-amber));
+            border-radius: 17px;
+            z-index: -1;
+        }
+
+        .disclaimer h4 {
+            color: var(--accent-amber) !important;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Special apocalyptic touches */
+        .apocalyptic-accent {
+            position: relative;
+        }
+
+        .apocalyptic-accent::before {
+            content: '☢';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            color: var(--toxic-green);
+            font-size: 1.2rem;
+            opacity: 0.7;
+            text-shadow: 0 0 10px var(--toxic-green);
+        }
+
+        /* Gritty typography */
+        .gritty-text {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Lightning effect for dramatic moments */
+        .lightning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            animation: lightning 8s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes lightning {
+            0%, 95%, 100% { opacity: 0; }
+            96%, 97% { 
+                opacity: 0.8; 
+                background: radial-gradient(circle, rgba(255, 179, 71, 0.1) 0%, transparent 70%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating ash background -->
+    <div class="floating-ash"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Your Author Brand</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#home">Home</a></li>
+                    <li class="nav-item"><a href="#books">Books</a></li>
+                    <li class="nav-item"><a href="#about">About</a></li>
+                    <li class="nav-item"><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-banner">
+                <img src="/assets/images/apocalypse-banner.svg" alt="Apocalypse website banner - dark dystopian landscape with dramatic sky">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <h1>Welcome to Your Website</h1>
+                        <p class="hero-subtitle">Where Humanity Endures</p>
+                        <p class="hero-description">
+                            This is a base starting point that your website would begin with. We will then work together 
+                            to customize every element to fit YOU - your dystopian worlds, your survivalist characters, 
+                            your unique voice as an apocalyptic author who crafts the futures that could be.
+                        </p>
+                    </div>
+                </div>
+                <div class="image-caption">
+                    <p><strong>Custom Banner Available</strong></p>
+                    <small>We can create a custom apocalyptic banner or you can provide your own. Dystopian landscapes, ruined cityscapes, or symbolic post-apocalyptic imagery make for compelling banners!</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="content-section" id="features">
+        <div class="section-container">
+            <h2 class="section-title">What's Included in Your Base Package</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Book Showcase</h3>
+                    <p>Professional displays for your dystopian novels with compelling descriptions, excerpts, and direct purchase links to major retailers like Amazon, Barnes & Noble, and Apple Books.</p>
+                    <div class="feature-note">
+                        <strong>Included:</strong> Book covers, detailed descriptions, retail links, genre tags, and unlimited book additions as your catalog grows.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>Author Bio & Photo</h3>
+                    <p>Professional author profile that builds credibility with dystopian readers, showcasing your background and storytelling approach.</p>
+                    <div class="feature-note">
+                        <strong>Your Choice:</strong> Include your photo or go text-only - whatever makes you comfortable. We help craft compelling bio content that resonates with dystopian fiction readers.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Contact Form</h3>
+                    <p>Professional contact system for readers, media, and industry professionals to reach you easily and securely.</p>
+                    <div class="feature-note">
+                        <strong>Fully Functional:</strong> Integrated contact form with spam protection and professional auto-responses.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📬</div>
+                    <h3>Newsletter Signup</h3>
+                    <p>Email list building integration with your preferred service to build your dystopian reader community from day one.</p>
+                    <div class="feature-note">
+                        <strong>Essential for Authors:</strong> Dystopian readers are highly engaged when you connect directly. Start building your reader community immediately.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile-Responsive Design</h3>
+                    <p>Your website looks professional on every device - perfect for readers who browse dystopian content on any screen.</p>
+                    <div class="feature-note">
+                        <strong>Essential Today:</strong> Over 60% of readers browse on mobile. Your atmospheric site will look great on any screen size.
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>SEO Setup & Launch Support</h3>
+                    <p>Search optimization to help readers find your dystopian works, plus complete technical setup and training.</p>
+                    <div class="feature-note">
+                        <strong>No Stress Launch:</strong> We handle the technical setup. You'll know exactly how to update your site when new books are ready.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Features Section -->
+            <div style="margin: 4rem 0;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--accent-amber); font-size: 2rem;">Optional Features to Enhance Your Website</h3>
+                <p style="text-align: center; margin-bottom: 3rem; color: var(--light-ash); max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Choose additional features based on your goals and where you are in your author journey. Every feature is designed to engage readers deeper with your dystopian stories.
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>Reader Reviews Section - $10</h3>
+                        <p>Dedicated space to showcase positive reader reviews and professional endorsements for your dystopian works.</p>
+                        <div class="feature-note">
+                            <strong>Great Value:</strong> Perfect for building credibility with new dystopian readers. Even 3-5 strong reviews make a powerful impression and boost book sales.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🗺️</div>
+                        <h3>World & Character Guide - $20</h3>
+                        <p>Dedicated pages for your dystopian world details, character backgrounds, faction information, and story lore.</p>
+                        <div class="feature-note">
+                            <strong>Perfect for Series Authors:</strong> Give readers deeper world exploration! Character guides, world-building details, and story elements that dystopian fans love to discover.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Events Calendar - $20</h3>
+                        <p>Display book signings, conventions, virtual events, and promotional activities.</p>
+                        <div class="feature-note">
+                            <strong>Perfect for:</strong> Authors actively doing conventions, book events, or virtual appearances. Most valuable when you have events to promote.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✏️</div>
+                        <h3>Blog System - $25</h3>
+                        <p>Content management system for world-building posts, writing updates, and reader engagement.</p>
+                        <div class="feature-note">
+                            <strong>Best for:</strong> Authors planning to post regularly about their dystopian themes. Improves SEO and builds reader connection through behind-the-scenes content.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🖼️</div>
+                        <h3>Photo Gallery - $30</h3>
+                        <p>Showcase book covers, convention photos, character inspiration, and promotional images.</p>
+                        <div class="feature-note">
+                            <strong>Best for:</strong> Established authors with visual content. Great for book covers, character inspiration, convention photos. Skip if limited visuals.
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>Direct Book Sales - $45</h3>
+                        <p>Sell and ship signed copies, special editions, or merchandise directly from your website. You handle inventory and shipping.</p>
+                        <div class="feature-note">
+                            <strong>Advanced Feature:</strong> For authors ready to manage direct sales. Perfect for offering exclusive signed copies or limited editions fans can't get on Amazon.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 3rem 0;">
+                <div style="background: rgba(26, 26, 26, 0.8); border: 2px solid var(--primary-rust); border-radius: 15px; padding: 2rem; max-width: 800px; margin: 0 auto; box-shadow: 0 0 20px var(--glow-effect);">
+                    <h3 style="color: var(--accent-amber); margin-bottom: 1rem; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px;">Single Page vs Multi-Page Website Options</h3>
+                    <p style="margin-bottom: 1rem; color: var(--light-ash);">You can choose to have your website as a <strong>single scrolling page</strong> (like this demo) where all content flows seamlessly, or as a <strong>traditional multi-page website</strong> with separate pages.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; text-align: left;">
+                        <div>
+                            <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">📱 Single Page Layout</h4>
+                            <ul style="margin-left: 1rem; color: var(--light-ash);">
+                                <li>All content on one immersive scrolling page</li>
+                                <li>Smooth navigation between sections</li>
+                                <li>Perfect for mobile dystopian readers</li>
+                                <li>Quick to load and explore</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">📖 Multi-Page Layout</h4>
+                            <ul style="margin-left: 1rem; color: var(--light-ash);">
+                                <li>Separate pages: Home, Books, About, Contact</li>
+                                <li>More space for detailed apocalyptic content</li>
+                                <li>Traditional website structure</li>
+                                <li>Ideal for extensive dystopian series</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.5rem; font-style: italic; color: var(--accent-amber);">We'll help you decide which option works best for your apocalyptic brand and reader engagement goals during our consultation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="content-section" id="books">
+        <div class="section-container">
+            <h2 class="section-title">Your Apocalyptic Showcase</h2>
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.1rem; color: var(--light-ash); max-width: 800px; margin-left: auto; margin-right: auto;">
+                This section will feature YOUR actual apocalyptic novels with your real covers, intense descriptions, purchase links, and any additional information you want to share with dystopian fiction readers.
+            </p>
+            <div class="books-grid">
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/apocalypse-book-1.svg" alt="Example apocalyptic book cover">
+                    </div>
+                    <h3 style="color: var(--accent-amber);">Your First Title</h3>
+                    <p>Your actual book description and gripping summary will be displayed here, exactly as you want dystopian readers to be drawn into your survivalist world.</p>
+                    <div class="feature-note">
+                        <strong>What We Include:</strong> Dramatic book cover display, compelling description, and purchase links to retailers.
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/apocalypse-book-2.svg" alt="Example apocalyptic book cover">
+                    </div>
+                    <h3 style="color: var(--accent-amber);">Your Second Title</h3>
+                    <p>Each dystopian novel gets its own dedicated space with all the intense details potential readers need to discover your post-apocalyptic stories.</p>
+                    <div class="feature-note">
+                        <strong>Dystopian Features:</strong> Theme tags, series information, character survival details, and atmospheric hooks that apocalyptic readers seek.
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="/assets/images/apocalypse-book-3.svg" alt="Example apocalyptic book cover">
+                    </div>
+                    <h3 style="color: var(--accent-amber);">Upcoming Releases</h3>
+                    <p>Showcase upcoming releases, works in progress, or teasers to keep your dystopian readers eagerly anticipating your next survivalist adventure.</p>
+                    <div class="feature-note">
+                        <strong>Future Dystopia:</strong> Include release dates, pre-order links, world-building reveals, or sneak peeks for upcoming post-apocalyptic adventures.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="content-section" id="about">
+        <div class="section-container">
+            <h2 class="section-title">About You - The Distopian Author</h2>
+            <div class="about-grid">
+                <div>
+                    <div class="author-image">
+                        <img src="/assets/images/apocalypse-author.svg" alt="Apocalyptic author photo placeholder">
+                    </div>
+                    <div class="feature-note" style="margin-top: 1rem;">
+                        <strong>Your Photo:</strong> You can provide your own professional author photo, or leave this space for just your written bio - completely your choice for your comfort.
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>Your Author Story Goes Here</h3>
+                    <p>
+                        This is where YOUR actual biography, dystopian writing journey, and personal story will be featured. 
+                        We'll work with you to craft compelling content that connects with apocalyptic fiction readers and 
+                        establishes your credibility as an author who understands survival, resilience, and the human spirit in extreme circumstances.
+                    </p>
+                    <p>
+                        Whether you want to share what inspired you to write apocalyptic fiction, your favorite dystopian themes, 
+                        your world-building process, or what drives you to create the survivalist stories that explore humanity's resilience - 
+                        this section will be completely customized to represent YOU authentically to your audience.
+                    </p>
+                    <div class="feature-note">
+                        <strong>What We Help With:</strong> We can assist with writing your bio, organizing your achievements, highlighting your credentials, and presenting your story in a way that resonates with dystopian fiction readers.
+                    </div>
+                    <div class="feature-note" style="margin-top: 1rem;">
+                        <strong>Optional Atmospheric Gallery Images:</strong> If you select our gallery images feature, we can create post-apocalyptic AI-generated artwork that conveys the mood and intensity of your dystopian novels.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="content-section" id="contact">
+        <div class="section-container">
+            <h2 class="section-title">Connect With Me</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+                <div class="feature-note" style="margin-top: 1rem;">
+                    <strong>Functional Forms:</strong> Your contact form will be fully functional and can integrate with your preferred email system or reader management platform.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Demo Controls -->
+    <section class="content-section">
+        <div class="section-container">
+            <div class="demo-controls">
+                <h3>Ready to Get Started?</h3>
+                <div class="action-buttons">
+                    <button class="action-btn btn-primary" onclick="chooseTheme()">Choose This Theme</button>
+                    <button class="action-btn btn-secondary" onclick="exploreMore()">Explore More Themes</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="disclaimer">
+                <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem; font-weight: bold;">⚠️ Important: AI Image Disclaimer</h4>
+                <p style="margin: 0; font-weight: 500; line-height: 1.6;">
+                    <strong>All images shown in this demo are AI-generated for demonstration purposes only.</strong> 
+                    If you choose to have Page & Pixel Designs provide images for your website, 
+                    they will be created using AI tools and will be unique to your project. 
+                    You may also provide your own images if preferred.
+                </p>
+            </div>
+            <p>&copy; 2025 Your Author Website - Apocalypse Theme Demo by Page & Pixel Designs</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">This demo showcases the Apocalypse theme with dark, gritty atmosphere for dystopian stories</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating ash particles
+        function createFloatingAsh() {
+            const ashContainer = document.querySelector('.floating-ash');
+            const ashCount = 20;
+            
+            for (let i = 0; i < ashCount; i++) {
+                const ash = document.createElement('div');
+                ash.className = 'ash';
+                ash.style.left = Math.random() * 100 + '%';
+                ash.style.width = (Math.random() * 4 + 2) + 'px';
+                ash.style.height = ash.style.width;
+                ash.style.animationDelay = Math.random() * 12 + 's';
+                ash.style.animationDuration = (8 + Math.random() * 8) + 's';
+                ashContainer.appendChild(ash);
+            }
+        }
+
+        // Choose this theme - redirect to services with theme selected
+        function chooseTheme() {
+            console.log('🎨 Starting theme selection process...');
+            
+            // Clear any existing theme selections first
+            sessionStorage.removeItem('selectedTheme');
+            localStorage.removeItem('selectedTheme');
+            
+            // Set the selected theme in multiple ways for maximum compatibility
+            sessionStorage.setItem('selectedTheme', 'apocalypse');
+            localStorage.setItem('selectedTheme', 'apocalypse');
+            
+            // Also set it in a way the services page definitely expects
+            sessionStorage.setItem('pagePixelSelectedTheme', 'apocalypse');
+            
+            // Add timestamp to help debug timing issues
+            sessionStorage.setItem('themeSelectionTime', new Date().toISOString());
+            
+            // Store theme info that won't be cleared
+            localStorage.setItem('lastSelectedTheme', 'apocalypse');
+            localStorage.setItem('lastThemeSelectionTime', new Date().toISOString());
+            
+            console.log('✅ Theme storage set:');
+            console.log('   sessionStorage.selectedTheme:', sessionStorage.getItem('selectedTheme'));
+            console.log('   localStorage.selectedTheme:', localStorage.getItem('selectedTheme'));
+            console.log('   sessionStorage.pagePixelSelectedTheme:', sessionStorage.getItem('pagePixelSelectedTheme'));
+            
+            // Test that we can read it back
+            const testRead = sessionStorage.getItem('selectedTheme');
+            if (testRead === 'apocalypse') {
+                console.log('✅ Storage test passed - theme can be read back');
+            } else {
+                console.error('❌ Storage test failed - could not read back theme');
+            }
+            
+            // Add visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Redirecting...';
+            button.style.transform = 'scale(0.95)';
+            
+            // Visual confirmation
+            const confirmation = document.createElement('div');
+            confirmation.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-rust);
+                color: var(--weathered-white);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                z-index: 10000;
+                font-weight: bold;
+                box-shadow: 0 8px 25px var(--shadow-color);
+                border: 1px solid var(--accent-amber);
+            `;
+            confirmation.textContent = '✓ Apocalypse Theme Selected - Redirecting...';
+            document.body.appendChild(confirmation);
+            
+            // Redirect with a slight delay to ensure storage is set
+            setTimeout(() => {
+                console.log('🔄 Redirecting to services page...');
+                // Add URL parameter to help services page detect the selection
+                window.location.href = '/services/?theme=apocalypse&from=demo';
+            }, 800);
+        }
+
+        // Explore more themes - redirect back to themes page
+        function exploreMore() {
+            console.log('Returning to themes page from Apocalypse demo...');
+            
+            // Add visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Loading...';
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                // Redirect back to themes page with a parameter to scroll to apocalypse theme
+                window.location.href = '/themes/?viewed=apocalypse';
+            }, 300);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingAsh();
+            
+            // Debug: Check if we have any stored themes when page loads
+            console.log('🔍 Apocalypse Demo Page Loaded - Checking stored themes:');
+            console.log('   sessionStorage.selectedTheme:', sessionStorage.getItem('selectedTheme'));
+            console.log('   localStorage.selectedTheme:', localStorage.getItem('selectedTheme'));
+            
+            // Add entrance animations
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            console.log('✅ Apocalypse theme demo loaded successfully!');
+        });
+
+        // Prevent form submission (demo only)
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('This is a demo form. In your actual website, this would send your message!');
+        });
+
+        // Ensure theme selection is preserved during navigation
+        window.addEventListener('beforeunload', function() {
+            // Make sure theme selection is still stored
+            if (!sessionStorage.getItem('selectedTheme')) {
+                console.log('🔄 Re-storing theme selection before page unload');
+                sessionStorage.setItem('selectedTheme', 'apocalypse');
+            }
+        });
+
+        // Add apocalyptic hover effects
+        document.querySelectorAll('.feature-card, .book-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--glow-effect)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
+            });
+        });
+
+        // Add lightning effect occasionally
+        function addLightningEffect() {
+            const lightning = document.createElement('div');
+            lightning.className = 'lightning';
+            document.body.appendChild(lightning);
+            
+            setTimeout(() => {
+                document.body.removeChild(lightning);
+            }, 1000);
+        }
+
+        // Trigger lightning effect randomly
+        setInterval(() => {
+            if (Math.random() < 0.1) { // 10% chance every 5 seconds
+                addLightningEffect();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
