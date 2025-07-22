@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page and Pixel Designs - Websites for Indie Authors</title>
+    <meta name="description" content="Professional website design for indie authors. We vibe code with you to create stunning, genre-specific websites that connect you with your readers.">
+    <link rel="stylesheet" href="assets/css/shared.css">
+<link rel="stylesheet" href="assets/css/auth-components.css">
+    <link rel="stylesheet" href="home-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Page & Pixel Designs</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/services/">Services</a></li>
+                <li><a href="/themes/">Themes</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <!-- Authentication Modal -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+    <div class="auth-modal-content">
+        <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+        
+        <!-- Sign In Form -->
+        <div id="signInForm" class="auth-form active">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your author dashboard</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signInError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Don't have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignUp()">
+                Create Account
+            </button>
+        </div>
+        
+        <!-- Sign Up Form -->
+        <div id="signUpForm" class="auth-form">
+            <div class="auth-header">
+                <h2>Create Your Account</h2>
+                <p>Start building your author platform today</p>
+            </div>
+            
+            <form onsubmit="AuthSystem.handleSignUp(event)">
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpEmail">Email Address</label>
+                    <input type="email" id="signUpEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required minlength="8">
+                    <small>At least 8 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signUpConfirm">Confirm Password</label>
+                    <input type="password" id="signUpConfirm" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signUpTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="auth-btn auth-btn-primary">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+                
+                <div class="auth-error" id="signUpError" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+            
+            <button class="auth-btn auth-btn-secondary" onclick="AuthSystem.switchToSignIn()">
+                Sign In Instead
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Notification -->
+<div id="authNotification" class="auth-notification" style="display: none;">
+    <div class="notification-content">
+        <span class="notification-icon">✅</span>
+        <span class="notification-message"></span>
+    </div>
+</div>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Websites That Tell Your Story</h1>
+                <p>Professional web design for indie authors who want to connect with their readers</p>
+                <a href="/services/" class="cta-button">Start Your Journey</a>
+            </section>
+
+            <!-- Features Grid -->
+            <section class="features-section">
+                <div class="features-grid">
+                    <div class="feature-card fade-in-element">
+                        <div class="feature-icon">📚</div>
+                        <h3>Author-Focused Design</h3>
+                        <p>We understand the unique needs of indie authors and create websites that showcase your books, build your brand, and connect with readers.</p>
+                    </div>
+                    <div class="feature-card fade-in-element">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Custom Themes</h3>
+                        <p>Genre-specific designs that capture the essence of your stories, from high fantasy to contemporary romance.</p>
+                    </div>
+                    <div class="feature-card fade-in-element">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast & Responsive</h3>
+                        <p>Mobile-friendly websites that load quickly and look stunning on all devices, keeping your readers engaged.</p>
+                    </div>
+                    <div class="feature-card fade-in-element">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Collaborative Process</h3>
+                        <p>We "vibe code" with you, ensuring your website reflects your unique voice and vision every step of the way.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section">
+                <h2>How We Work Together</h2>
+                <div class="process-grid">
+                    <div class="process-step fade-in-element">
+                        <div class="step-number">1</div>
+                        <h4>Choose Your Theme</h4>
+                        <p>Pick from our genre-specific themes or tell us about your vision for a custom design. Every website includes everything you need to start.</p>
+                    </div>
+                    <div class="process-step fade-in-element">
+                        <div class="step-number">2</div>
+                        <h4>Add Your Features</h4>
+                        <p>Select additional features like blogs, galleries, or e-commerce. We'll guide you on what works best for your author journey stage.</p>
+                    </div>
+                    <div class="process-step fade-in-element">
+                        <div class="step-number">3</div>
+                        <h4>Vibe Code Together</h4>
+                        <p>We build your site collaboratively, keeping you involved in every decision to ensure it perfectly represents your brand.</p>
+                    </div>
+                    <div class="process-step fade-in-element">
+                        <div class="step-number">4</div>
+                        <h4>Launch & Choose Support</h4>
+                        <p>We ensure your site launches perfectly. Then choose: complete handover or optional $5/month support (cancel anytime).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What's Included Section -->
+            <section class="included-section">
+                <div class="included-content">
+                    <h2>Every Website Includes Everything You Need</h2>
+                    <div class="included-grid">
+                        <div class="included-item fade-in-element">
+                            <div class="included-icon">✅</div>
+                            <div>
+                                <h4>Complete Setup</h4>
+                                <p>Domain connection, hosting guidance, SSL certificates, and full launch support</p>
+                            </div>
+                        </div>
+                        <div class="included-item fade-in-element">
+                            <div class="included-icon">✅</div>
+                            <div>
+                                <h4>Mobile-Ready Design</h4>
+                                <p>Responsive layouts that look stunning on phones, tablets, and desktops</p>
+                            </div>
+                        </div>
+                        <div class="included-item fade-in-element">
+                            <div class="included-icon">✅</div>
+                            <div>
+                                <h4>Author Essentials</h4>
+                                <p>Bio section, book showcase, contact forms, social media integration, and basic SEO</p>
+                            </div>
+                        </div>
+                        <div class="included-item fade-in-element">
+                            <div class="included-icon">✅</div>
+                            <div>
+                                <h4>Your Choice of Support</h4>
+                                <p>Complete handover with training, or optional $5/month maintenance (cancel anytime)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section">
+                <div class="cta-content">
+                    <h2>Ready to Build Your Author Platform?</h2>
+                    <p>Choose your theme, add your features, and launch with everything included. Optional $5/month support available.</p>
+                    <div class="cta-buttons">
+                        <a href="/themes/" class="cta-button">Browse Themes</a>
+                        <a href="/services/" class="cta-button-secondary">Build Your Package</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="assets/js/shared.js"></script>
+<script src="assets/js/auth-system.js"></script>
+    <script src="home-script.js"></script>
+</body>
+</html>
