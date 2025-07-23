@@ -1,11 +1,10 @@
+
 // Authentication System JavaScript
 // Save as: assets/js/auth-system.js
 
 // User Database System (API-based)
 class UserDatabase {
-    static API_BASE = 'http://localhost:3001/api';
-    //static API_BASE = 'http://localhost:3001/api'; for testing.
-    //static API_BASE = '/api'; for live.
+    static API_BASE = '/api';
     
     static async createUser(userData) {
         try {
@@ -458,9 +457,19 @@ class AuthSystem {
     
     // Redirect to admin after successful auth
     static redirectToAdmin() {
-        if (window.location.pathname !== '/admin/') {
-            window.location.href = '/admin/';
-        }
+        setTimeout(() => {
+            if (window.location.pathname !== '/admin/') {
+                window.location.href = '/admin/';
+            }
+        }, 1500);
+    }
+    
+    // Auth state change callback for compatibility
+    static onAuthStateChanged = null;
+    
+    // Set auth state change listener
+    static setOnAuthStateChanged(callback) {
+        this.onAuthStateChanged = callback;
     }
 }
 

@@ -193,9 +193,15 @@ async function handleFormSubmission(e) {
         }
         
         // Submit to Formspree
-        const response = await fetch(form.action, {
+        const formData = new FormData(form);
+
+        // Add additional metadata
+        formData.append('_subject', 'New inquiry from Page & Pixel Designs website');
+        formData.append('_replyto', document.getElementById('email').value);
+
+        const response = await fetch('https://formspree.io/f/xgvejbby', {
             method: 'POST',
-            body: new FormData(form),
+            body: formData,
             headers: {
                 'Accept': 'application/json'
             }

@@ -13,13 +13,17 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">Page & Pixel Designs</a>
+            <a href="/" class="logo">
+                <img src="assets/images/logo.svg" alt="Page & Pixel Designs" style="width: 32px; height: 32px; margin-right: 0.5rem; vertical-align: middle;">
+                Page & Pixel Designs
+            </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="/about/">About</a></li>
                 <li><a href="/services/">Services</a></li>
                 <li><a href="/themes/">Themes</a></li>
                 <li><a href="/contact/">Contact</a></li>
+                <li id="adminLink" style="display:none;"><a href="/admin/">Admin</a></li>
             </ul>
             <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <span></span>
@@ -251,5 +255,16 @@
     <script src="assets/js/shared.js"></script>
 <script src="assets/js/auth-system.js"></script>
     <script src="home-script.js"></script>
+    <script>
+        // Check if the user is logged in and show/hide the admin link
+        AuthSystem.onAuthStateChanged(user => {
+            const adminLink = document.getElementById('adminLink');
+            if (user) {
+                adminLink.style.display = 'block';
+            } else {
+                adminLink.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
