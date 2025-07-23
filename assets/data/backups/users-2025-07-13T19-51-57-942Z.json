@@ -1,0 +1,82 @@
+{
+  "users": {
+    "artemisgrace15@gmail.com": {
+      "id": "9f859f3f5304cd4f91151319f295f818",
+      "email": "artemisgrace15@gmail.com",
+      "name": "Artemis Grace",
+      "passwordHash": "11e2cf2395ca3a238501d37e034c0179b4defcc33233673533a757ef8cf793926a4ccd4608e00aae14e5ac38527bf89c84e520572e52c54df6b0032b7664c3ad",
+      "passwordSalt": "a10d1ee6c0b510aa2d58fbfb23b03289",
+      "features": {
+        "blog": {
+          "purchased": true,
+          "enabled": true
+        },
+        "events": {
+          "purchased": true,
+          "enabled": false
+        },
+        "gallery": {
+          "purchased": true,
+          "enabled": false
+        },
+        "reviews": {
+          "purchased": true,
+          "enabled": false
+        },
+        "worldbuilding": {
+          "purchased": true,
+          "enabled": false
+        },
+        "sales": {
+          "purchased": true,
+          "enabled": false
+        }
+      },
+      "hasSupport": false,
+      "stripeCustomerId": null,
+      "profile": {
+        "displayName": "Artemis Grace",
+        "bio": "",
+        "website": "",
+        "twitter": "",
+        "instagram": "",
+        "facebook": ""
+      },
+      "books": [],
+      "stats": {
+        "bookCount": 0,
+        "subscriberCount": 0,
+        "blogCount": 0,
+        "visitorCount": 0
+      },
+      "createdAt": "2025-07-13T19:40:13.090Z",
+      "lastLogin": "2025-07-13T19:48:39.730Z",
+      "isActive": true,
+      "updatedAt": "2025-07-13T19:51:50.644Z"
+    }
+  },
+  "sessions": {
+    "eab88c9439d0e08cff513899ad7daff6ba3e3309db88d9084a8d5d6019fb673a": {
+      "id": "eab88c9439d0e08cff513899ad7daff6ba3e3309db88d9084a8d5d6019fb673a",
+      "userId": "9f859f3f5304cd4f91151319f295f818",
+      "email": "artemisgrace15@gmail.com",
+      "createdAt": "2025-07-13T19:48:24.483Z",
+      "expiresAt": "2025-07-20T19:48:24.483Z",
+      "isActive": true
+    },
+    "f8c62f98461cb17c02f8a6241c99588e45f116c47467a2f0548faea182af7eec": {
+      "id": "f8c62f98461cb17c02f8a6241c99588e45f116c47467a2f0548faea182af7eec",
+      "userId": "9f859f3f5304cd4f91151319f295f818",
+      "email": "artemisgrace15@gmail.com",
+      "createdAt": "2025-07-13T19:48:39.736Z",
+      "expiresAt": "2025-07-20T19:48:39.736Z",
+      "isActive": true
+    }
+  },
+  "metadata": {
+    "created": "2025-01-15T00:00:00.000Z",
+    "version": "1.0.0",
+    "description": "Page & Pixel Designs User Database",
+    "lastSaved": "2025-07-13T19:48:39.736Z"
+  }
+}
