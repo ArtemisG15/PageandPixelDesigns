@@ -74,6 +74,7 @@
     align-items: center;
     gap: 1.5rem;
     flex: 1;
+    min-width: 0; /* Allow flex items to shrink */
 }
 
 .price-info h3 {
@@ -735,6 +736,7 @@
         width: 100%;
         justify-content: center;
         gap: 1rem;
+        min-width: 0;
     }
     
     .price-info {
@@ -764,15 +766,60 @@
         grid-template-columns: 1fr;
     }
     
-    .theme-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-    .features-grid { grid-template-columns: 1fr; }
-    .support-options { grid-template-columns: 1fr; }
-    .trust-signals { flex-direction: column; align-items: center; }
-    .tooltip { width: 250px; right: -100px; }
+    /* Fixed grid sizing for mobile */
+    .theme-grid { 
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+    .features-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .support-options { 
+        grid-template-columns: 1fr; 
+    }
+    .trust-signals { 
+        flex-direction: column; 
+        align-items: center; 
+    }
+    
+    /* Fixed tooltip positioning */
+    .tooltip { 
+        width: 200px; 
+        right: 0;
+        left: auto;
+        max-width: calc(100vw - 2rem);
+    }
+    
+    /* Disable hover effects that cause movement */
+    .service-option:hover,
+    .feature-option:hover,
+    .theme-option:hover,
+    .theme-option.selected {
+        transform: none;
+    }
+    
+    /* Ensure modals fit properly */
+    .modal-overlay .modal-content,
+    .payment-modal .modal-content {
+        width: calc(100% - 2rem);
+        margin: 1rem;
+        max-width: none;
+    }
 }
 
 /* Extra small screens */
 @media (max-width: 480px) {
+    /* Universal overflow prevention */
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .page-container,
+    .container {
+        overflow-x: hidden;
+    }
+    
     .price-summary {
         top: 70px;
     }
@@ -790,10 +837,30 @@
         font-size: 0.95rem;
     }
     
+    /* Even smaller grids for tiny screens */
+    .theme-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .included-features {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Further tooltip fixes */
+    .tooltip { 
+        width: 180px;
+        right: 0;
+        left: auto;
+        font-size: 0.8rem;
+        max-width: calc(100vw - 1rem);
+    }
+    
+    /* Modal improvements */
     .modal-overlay .modal-content,
     .payment-modal .modal-content {
-        width: 95%;
-        margin: 1rem;
+        width: calc(100% - 1rem);
+        margin: 0.5rem;
     }
     
     .modal-overlay .modal-actions,
@@ -804,9 +871,14 @@
     .modal-btn {
         width: 100%;
     }
-
-    .tooltip { 
-        right: 0; /* Instead of -100px */
-        max-width: calc(100vw - 2rem);
+    
+    /* Remove all transforms on very small screens */
+    .service-option:hover,
+    .feature-option:hover,
+    .theme-option:hover,
+    .option-card:hover,
+    .process-step:hover,
+    .included-item:hover {
+        transform: none !important;
     }
 }
