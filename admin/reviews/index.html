@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews Manager - Page & Pixel Designs</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/auth-components.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../../assets/images/logo.svg" alt="Page & Pixel Designs" class="nav-logo" style="width: 40px; height: 40px;">
+                <span class="nav-title">Reviews Manager</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="/admin/" class="nav-link">Dashboard</a>
+                <a href="/admin/books/" class="nav-link">Books</a>
+                <a href="/admin/blog/" class="nav-link">Blog</a>
+                <a href="/admin/events/" class="nav-link">Events</a>
+                <a href="/admin/gallery/" class="nav-link">Gallery</a>
+                <a href="/admin/reviews/" class="nav-link active">Reviews</a>
+                <a href="../../" class="nav-link back-to-site">← Back to Main Site</a>
+                <div class="nav-item" id="authNavItem">
+                    <a href="#" onclick="AuthSystem.logout(); return false;" class="auth-nav-link">
+                        <span class="auth-user-indicator">🚪</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading reviews manager...</p>
+        </div>
+
+        <!-- Not Authenticated State -->
+        <div id="notAuthenticatedState" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>Access Required</h2>
+                <p>Please sign in to manage your reader reviews.</p>
+                <button onclick="AuthSystem.showAuthModal()" class="auth-btn">Sign In</button>
+            </div>
+        </div>
+
+        <!-- Reviews Manager -->
+        <div id="reviewsManager" class="manager-panel" style="display: none;">
+            <!-- Header -->
+            <header class="manager-header">
+                <div class="header-content">
+                    <h1>⭐ Reviews Manager</h1>
+                    <p>Collect, moderate, and showcase reader testimonials and reviews</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="ReviewsManager.addReview()" class="primary-btn">
+                        ✨ Add New Review
+                    </button>
+                    <button onclick="ReviewsManager.importReviews()" class="secondary-btn">
+                        📥 Import Reviews
+                    </button>
+                </div>
+            </header>
+
+            <!-- Reviews Dashboard -->
+            <div class="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalReviews">0</div>
+                        <div class="stat-label">Total Reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingReviews">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="averageRating">0.0</div>
+                        <div class="stat-label">Average Rating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="featuredReviews">0</div>
+                        <div class="stat-label">Featured</div>
+                    </div>
+                </div>
+
+                <!-- Reviews Filters -->
+                <div class="reviews-controls">
+                    <div class="filters-section">
+                        <select id="statusFilter">
+                            <option value="all">All Reviews</option>
+                            <option value="approved">Approved</option>
+                            <option value="pending">Pending</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        
+                        <select id="sortReviews">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="rating-high">Highest Rating</option>
+                            <option value="rating-low">Lowest Rating</option>
+                            <option value="name">By Name</option>
+                        </select>
+                        
+                        <input type="search" id="searchReviews" placeholder="Search reviews...">
+                    </div>
+                </div>
+
+                <!-- Reviews Grid -->
+                <div class="reviews-grid" id="reviewsGrid">
+                    <!-- Reviews will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Editor Modal -->
+    <div id="reviewModal" class="modal-overlay">
+        <div class="modal-content review-modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Review</h3>
+                <button class="close-modal" onclick="ReviewsManager.closeModal('reviewModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <input type="hidden" id="reviewId" name="reviewId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewerName">Reviewer Name *</label>
+                            <input type="text" id="reviewerName" name="reviewerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewerEmail">Email</label>
+                            <input type="email" id="reviewerEmail" name="reviewerEmail">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookTitle">Book Title *</label>
+                            <input type="text" id="bookTitle" name="bookTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Rating *</label>
+                            <select id="rating" name="rating" required>
+                                <option value="">Select rating</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reviewText">Review Text *</label>
+                        <textarea id="reviewText" name="reviewText" rows="6" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewSource">Source</label>
+                            <select id="reviewSource" name="source">
+                                <option value="website">Website</option>
+                                <option value="amazon">Amazon</option>
+                                <option value="goodreads">Goodreads</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="verifiedPurchase" name="verifiedPurchase">
+                                Verified Purchase
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" onclick="ReviewsManager.closeModal('reviewModal')" class="secondary-btn">Cancel</button>
+                        <button type="button" onclick="ReviewsManager.saveReview()" class="primary-btn">Save Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Reviews Modal -->
+    <div id="importModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Import Reviews</h3>
+                <button class="close-modal" onclick="ReviewsManager.closeModal('importModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="importSource">Import Source</label>
+                    <select id="importSource">
+                        <option value="">Select source</option>
+                        <option value="goodreads">Goodreads</option>
+                        <option value="amazon">Amazon</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="importApiKey">API Key / File</label>
+                    <input type="text" id="importApiKey" placeholder="Enter API key or select file">
+                </div>
+                <div class="form-actions">
+                    <button type="button" onclick="ReviewsManager.closeModal('importModal')" class="secondary-btn">Cancel</button>
+                    <button type="button" onclick="ReviewsManager.processImport()" class="primary-btn">Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Review Settings</h3>
+                <button class="close-modal" onclick="ReviewsManager.closeSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="autoApprove">
+                        Auto-approve reviews
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="emailNotifications">
+                        Email notifications for new reviews
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="requireEmail">
+                        Require email for reviews
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="allowAnonymous">
+                        Allow anonymous reviews
+                    </label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="moderateFirst">
+                        Moderate first-time reviewers
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="reviewLayout">Layout style</label>
+                    <select id="reviewLayout">
+                        <option value="grid" selected>Grid layout</option>
+                        <option value="list">List layout</option>
+                        <option value="carousel">Carousel</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button onclick="ReviewsManager.closeSettings()" class="secondary-btn">Cancel</button>
+                    <button onclick="ReviewsManager.saveSettings()" class="primary-btn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="../../assets/js/user-database.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        // Make mobile menu available
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>s="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalReviews">0</span>
+                            <span class="stat-label">Total Reviews</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="averageRating">0.0</span>
+                            <span class="stat-label">Average Rating</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="publishedReviews">0</span>
+                            <span class="stat-label">Published</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="pendingReviews">0</span>
+                            <span class="stat-label">Pending Review</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Reader Reviews</h2>
+                    <div class="filter-controls">
+                        <select id="statusFilter" onchange="ReviewsManager.filterReviews()">
+                            <option value="">All Reviews</option>
+                            <option value="published">Published</option>
+                            <option value="pending">Pending</option>
+                            <option value="draft">Draft</option>
+                            <option value="hidden">Hidden</option>
+                        </select>
+                        <select id="ratingFilter" onchange="ReviewsManager.filterReviews()">
+                            <option value="">All Ratings</option>
+                            <option value="5">5 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="2">2 Stars</option>
+                            <option value="1">1 Star</option>
+                        </select>
+                        <select id="bookFilter" onchange="ReviewsManager.filterReviews()">
+                            <option value="">All Books</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="reviews-grid" id="reviewsGrid">
+                    <!-- Reviews will be populated here -->
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">⭐</div>
+                    <h3>No Reviews Yet</h3>
+                    <p>Start collecting reader feedback by adding your first review</p>
+                    <button onclick="ReviewsManager.addReview()" class="primary-btn">Add Your First Review</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Editor Modal -->
+    <div id="reviewEditorModal" class="modal-overlay">
+        <div class="modal-content review-editor-modal">
+            <div class="modal-header">
+                <h3 id="editorTitle">Add New Review</h3>
+                <button class="close-modal" onclick="ReviewsManager.closeReviewEditor()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewerName">Reviewer Name *</label>
+                            <input type="text" id="reviewerName" required placeholder="Reader's name">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewerEmail">Email (Optional)</label>
+                            <input type="email" id="reviewerEmail" placeholder="reader@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewBook">Book Reviewed</label>
+                            <select id="reviewBook">
+                                <option value="">General Review</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewRating">Rating *</label>
+                            <div class="star-rating-input">
+                                <div class="star-buttons">
+                                    <button type="button" class="star-btn" data-rating="1">⭐</button>
+                                    <button type="button" class="star-btn" data-rating="2">⭐</button>
+                                    <button type="button" class="star-btn" data-rating="3">⭐</button>
+                                    <button type="button" class="star-btn" data-rating="4">⭐</button>
+                                    <button type="button" class="star-btn" data-rating="5">⭐</button>
+                                </div>
+                                <input type="hidden" id="reviewRating" required>
+                                <span class="rating-text" id="ratingText">Select a rating</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewTitle">Review Title</label>
+                        <input type="text" id="reviewTitle" placeholder="A captivating adventure...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewText">Review Text *</label>
+                        <textarea id="reviewText" rows="6" required placeholder="What did the reader think about your work?"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewSource">Source</label>
+                            <select id="reviewSource">
+                                <option value="direct">Direct Submission</option>
+                                <option value="goodreads">Goodreads</option>
+                                <option value="amazon">Amazon</option>
+                                <option value="barnes-noble">Barnes & Noble</option>
+                                <option value="social-media">Social Media</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewDate">Review Date</label>
+                            <input type="date" id="reviewDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewerLocation">Reviewer Location</label>
+                        <input type="text" id="reviewerLocation" placeholder="City, Country">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reviewFeatured">
+                            Feature this review prominently
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reviewVerified">
+                            Mark as verified purchase
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reviewPublished" checked>
+                            Publish immediately
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" onclick="ReviewsManager.saveReviewDraft()" class="secondary-btn">Save as Draft</button>
+                        <button type="submit" class="primary-btn">Save Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Settings Modal -->
+    <div id="reviewSettingsModal" class="modal-overlay">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h3>Review Display Settings</h3>
+                <button class="close-modal" onclick="ReviewsManager.closeSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>Display Options</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showRatings" checked>
+                            Show star ratings on reviews
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showDates" checked>
+                            Show review dates
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showLocations">
+                            Show reviewer locations
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showSources">
+                            Show review sources
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>Moderation</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="requireModeration">
+                            Require manual approval for new reviews
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="allowUserSubmissions" checked>
+                            Allow readers to submit reviews directly
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enableSpamFilter" checked>
+                            Enable automatic spam filtering
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>Layout Options</h4>
+                    <div class="form-group">
+                        <label for="reviewsPerPage">Reviews per page</label>
+                        <select id="reviewsPerPage">
+                            <option value="6">6 reviews</option>
+                            <option value="9" selected>9 reviews</option>
+                            <option value="12">12 reviews</option>
+                            <option value="all">Show all</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewLayout">Layout style</label>
+                        <select id="reviewLayout">
+                            <option value="grid" selected>Grid layout</option>
+                            <option value="list">List layout</option>
+                            <option value="carousel">Carousel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button onclick="ReviewsManager.closeSettings()" class="secondary-btn">Cancel</button>
+                    <button onclick="ReviewsManager.saveSettings()" class="primary-btn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+            <!-- Auth forms would go here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

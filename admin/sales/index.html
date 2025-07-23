@@ -1,0 +1,393 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Manager - Author Admin</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="nav-container">
+            <a href="../../" class="logo">Page & Pixel Designs</a>
+            <div class="nav-actions">
+                <a href="../" class="back-btn">← Dashboard</a>
+                <button onclick="AuthSystem.logout()" class="logout-btn">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-container">
+        <div class="admin-header">
+            <h1>💰 Sales Manager</h1>
+            <p>Manage direct book sales, signed copies, and special editions</p>
+        </div>
+
+        <!-- Sales Dashboard -->
+        <div class="dashboard-grid">
+            <!-- Quick Stats -->
+            <div class="stats-section">
+                <div class="stat-card revenue">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalRevenue">$0</div>
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-change positive" id="revenueChange">+0%</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card orders">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-change" id="ordersChange">+0%</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card pending">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="pendingOrders">0</div>
+                        <div class="stat-label">Pending Orders</div>
+                        <div class="stat-urgent" id="urgentCount">0 urgent</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card bestseller">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="bestsellerTitle">-</div>
+                        <div class="stat-label">Bestseller</div>
+                        <div class="stat-extra" id="bestsellerSales">0 copies</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                    <button class="view-all-btn" onclick="SalesManager.showAllActivity()">View All</button>
+                </div>
+                <div class="activity-feed" id="activityFeed">
+                    <div class="activity-item">
+                        <div class="activity-icon">📦</div>
+                        <div class="activity-content">
+                            <p>No recent activity</p>
+                            <span class="activity-time">Start by adding products</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Tabs -->
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="products">Products</button>
+                <button class="tab-btn" data-tab="orders">Orders</button>
+                <button class="tab-btn" data-tab="inventory">Inventory</button>
+                <button class="tab-btn" data-tab="settings">Settings</button>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="products-tab" class="tab-content active">
+                <div class="content-toolbar">
+                    <div class="toolbar-section">
+                        <div class="filter-options">
+                            <select id="productTypeFilter" class="filter-select">
+                                <option value="">All Types</option>
+                                <option value="book">Books</option>
+                                <option value="signed">Signed Copies</option>
+                                <option value="special">Special Editions</option>
+                                <option value="merchandise">Merchandise</option>
+                            </select>
+                            
+                            <select id="productStatusFilter" class="filter-select">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="draft">Draft</option>
+                                <option value="sold-out">Sold Out</option>
+                                <option value="discontinued">Discontinued</option>
+                            </select>
+                        </div>
+                        
+                        <div class="search-box">
+                            <input type="text" id="productSearch" placeholder="Search products..." class="search-input">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="toolbar-actions">
+                        <button class="secondary-btn" onclick="SalesManager.importProducts()">
+                            <span class="icon">📥</span>
+                            Import
+                        </button>
+                        <button class="primary-btn" onclick="SalesManager.showProductEditor()">
+                            <span class="icon">+</span>
+                            Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="productsGrid" class="products-grid">
+                    <!-- Products will be populated here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="productsEmptyState" class="empty-state">
+                    <div class="empty-content">
+                        <div class="empty-icon">📚</div>
+                        <h3>Start Selling Your Books</h3>
+                        <p>Create listings for signed copies, special editions, or merchandise. Connect directly with your readers and offer exclusive items they can't get anywhere else.</p>
+                        <div class="empty-suggestions">
+                            <div class="suggestion-grid">
+                                <button class="suggestion-card" onclick="SalesManager.createQuickProduct('signed', 'Signed Paperback')">
+                                    <span class="suggestion-icon">✍️</span>
+                                    <span class="suggestion-title">Signed Paperback</span>
+                                    <span class="suggestion-desc">Most popular option</span>
+                                </button>
+                                <button class="suggestion-card" onclick="SalesManager.createQuickProduct('special', 'Limited Edition')">
+                                    <span class="suggestion-icon">🌟</span>
+                                    <span class="suggestion-title">Limited Edition</span>
+                                    <span class="suggestion-desc">Create scarcity</span>
+                                </button>
+                                <button class="suggestion-card" onclick="SalesManager.createQuickProduct('merchandise', 'Branded Items')">
+                                    <span class="suggestion-icon">🛍️</span>
+                                    <span class="suggestion-title">Merchandise</span>
+                                    <span class="suggestion-desc">Bookmarks, mugs, etc.</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="primary-btn" onclick="SalesManager.showProductEditor()">Create First Product</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="orders-tab" class="tab-content">
+                <div class="orders-toolbar">
+                    <div class="toolbar-section">
+                        <div class="filter-options">
+                            <select id="orderStatusFilter" class="filter-select">
+                                <option value="">All Orders</option>
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            
+                            <select id="orderDateFilter" class="filter-select">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                            </select>
+                        </div>
+                        
+                        <div class="bulk-actions" style="display: none;" id="orderBulkActions">
+                            <span class="bulk-count">0 selected</span>
+                            <button class="bulk-btn" onclick="SalesManager.bulkUpdateOrders('processing')">Mark Processing</button>
+                            <button class="bulk-btn" onclick="SalesManager.bulkUpdateOrders('shipped')">Mark Shipped</button>
+                            <button class="bulk-btn" onclick="SalesManager.exportOrders()">Export</button>
+                        </div>
+                    </div>
+                    
+                    <div class="toolbar-actions">
+                        <button class="secondary-btn" onclick="SalesManager.exportOrders()">
+                            <span class="icon">📊</span>
+                            Export Orders
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Orders List -->
+                <div id="ordersList" class="orders-list">
+                    <!-- Orders will be populated here -->
+                </div>
+
+                <div id="ordersEmptyState" class="empty-state">
+                    <div class="empty-content">
+                        <div class="empty-icon">📦</div>
+                        <h3>No Orders Yet</h3>
+                        <p>When customers purchase your products, their orders will appear here for you to manage and fulfill.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Tab -->
+            <div id="inventory-tab" class="tab-content">
+                <div class="inventory-summary">
+                    <div class="summary-card">
+                        <h4>Low Stock Alert</h4>
+                        <div class="alert-count" id="lowStockCount">0</div>
+                        <p>Items need restocking</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Out of Stock</h4>
+                        <div class="alert-count critical" id="outOfStockCount">0</div>
+                        <p>Items unavailable</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Total Value</h4>
+                        <div class="value-amount" id="inventoryValue">$0</div>
+                        <p>Current inventory</p>
+                    </div>
+                </div>
+
+                <div class="inventory-grid" id="inventoryGrid">
+                    <!-- Inventory items will be populated here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="settings-sections">
+                    <!-- Shipping Settings -->
+                    <div class="settings-section">
+                        <h3>Shipping Settings</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="shippingCost">Standard Shipping Cost</label>
+                                <input type="number" id="shippingCost" step="0.01" placeholder="5.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="freeShippingThreshold">Free Shipping Threshold</label>
+                                <input type="number" id="freeShippingThreshold" step="0.01" placeholder="35.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="processingTime">Processing Time (days)</label>
+                                <input type="number" id="processingTime" placeholder="3">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="internationalShipping">
+                                    Offer International Shipping
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Settings -->
+                    <div class="settings-section">
+                        <h3>Payment Settings</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="stripePublishableKey">Stripe Publishable Key</label>
+                                <input type="text" id="stripePublishableKey" placeholder="pk_...">
+                            </div>
+                            <div class="form-group">
+                                <label for="stripeSecretKey">Stripe Secret Key</label>
+                                <input type="password" id="stripeSecretKey" placeholder="sk_...">
+                            </div>
+                            <div class="form-group">
+                                <label for="taxRate">Tax Rate (%)</label>
+                                <input type="number" id="taxRate" step="0.01" placeholder="8.25">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Information -->
+                    <div class="settings-section">
+                        <h3>Business Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="businessName">Business Name</label>
+                                <input type="text" id="businessName" placeholder="Your Author Business">
+                            </div>
+                            <div class="form-group">
+                                <label for="businessAddress">Business Address</label>
+                                <textarea id="businessAddress" rows="3" placeholder="123 Main St&#10;City, State 12345"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="businessEmail">Contact Email</label>
+                                <input type="email" id="businessEmail" placeholder="orders@yourname.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="businessPhone">Contact Phone</label>
+                                <input type="tel" id="businessPhone" placeholder="(555) 123-4567">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="primary-btn" onclick="SalesManager.saveSettings()">Save Settings</button>
+                        <button class="secondary-btn" onclick="SalesManager.testPaymentSetup()">Test Payment Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Editor Modal -->
+        <div id="productEditor" class="modal-overlay">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h2 id="productEditorTitle">Add New Product</h2>
+                    <button class="close-btn" onclick="SalesManager.closeProductEditor()">&times;</button>
+                </div>
+                
+                <form id="productForm" class="modal-body">
+                    <!-- Product editor form content will be populated here -->
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Details Modal -->
+        <div id="orderDetailsModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Order Details</h2>
+                    <button class="close-btn" onclick="SalesManager.closeOrderDetails()">&times;</button>
+                </div>
+                <div class="modal-body" id="orderDetailsContent">
+                    <!-- Order details will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+
+            <form id="signInForm" class="auth-form active" onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to manage your sales</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+
+                <div class="auth-error" id="signInError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="../script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

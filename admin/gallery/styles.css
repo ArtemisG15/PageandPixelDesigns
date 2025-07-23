@@ -1,0 +1,593 @@
+
+/* Gallery Manager Styles */
+
+.albums-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.album-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.album-cover {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--admin-primary), var(--admin-secondary));
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.album-card:hover .album-cover img {
+    transform: scale(1.05);
+}
+
+.album-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.album-card:hover .album-overlay {
+    opacity: 1;
+}
+
+.overlay-btn {
+    padding: 0.5rem 1rem;
+    background: white;
+    color: var(--admin-primary);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.overlay-btn:hover {
+    background: var(--admin-primary);
+    color: white;
+}
+
+.featured-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--admin-warning);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.album-info {
+    padding: 1.5rem;
+}
+
+.album-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0 0 0.5rem 0;
+}
+
+.album-description {
+    color: var(--admin-text-light);
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+}
+
+.album-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.album-stats .stat {
+    font-size: 0.85rem;
+    color: var(--admin-text-light);
+    background: var(--admin-bg-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+}
+
+/* Photos Grid */
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.photo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.photo-thumbnail {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    background: var(--admin-bg-light);
+}
+
+.photo-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.photo-card:hover .photo-thumbnail img {
+    transform: scale(1.05);
+}
+
+.photo-thumbnail .featured-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--admin-warning);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.photo-info {
+    padding: 1rem;
+}
+
+.photo-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0 0 0.25rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.photo-album {
+    color: var(--admin-text-light);
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.photo-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--admin-text-light);
+}
+
+.photo-actions {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.photo-card:hover .photo-actions {
+    opacity: 1;
+}
+
+.photo-actions .action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--admin-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.photo-actions .action-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.photo-actions .action-btn.delete:hover {
+    background: var(--admin-danger);
+    color: white;
+}
+
+/* Upload Modal */
+.upload-modal {
+    max-width: 600px;
+    width: 95vw;
+}
+
+.upload-area {
+    border: 2px dashed var(--admin-border);
+    border-radius: 10px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--admin-bg-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+    border-color: var(--admin-primary);
+    background: rgba(66, 153, 225, 0.05);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+.upload-area h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--admin-text);
+}
+
+.upload-area p {
+    margin: 0 0 1.5rem 0;
+    color: var(--admin-text-light);
+}
+
+.browse-btn {
+    background: var(--admin-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.browse-btn:hover {
+    background: #1A365D;
+}
+
+.upload-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.upload-queue {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.upload-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+    margin-bottom: 0.75rem;
+}
+
+.upload-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.upload-info {
+    flex: 1;
+}
+
+.file-name {
+    display: block;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.file-size {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--admin-text-light);
+}
+
+.upload-progress {
+    width: 120px;
+    height: 8px;
+    background: var(--admin-bg-light);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-left: 1rem;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--admin-success);
+    transition: width 0.3s ease;
+}
+
+.upload-complete {
+    color: var(--admin-success);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Album Editor Modal */
+.album-editor-modal {
+    max-width: 500px;
+    width: 95vw;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Photo Viewer Modal */
+.photo-viewer {
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.photo-viewer-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.photo-viewer .close-modal {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 10;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.prev-btn {
+    left: 2rem;
+}
+
+.next-btn {
+    right: 2rem;
+}
+
+.photo-container {
+    max-width: 80%;
+    max-height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.photo-info {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.photo-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+.photo-info p {
+    margin: 0 0 1rem 0;
+    opacity: 0.8;
+}
+
+.photo-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* View Controls */
+.view-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--admin-border);
+    background: white;
+    color: var(--admin-text-light);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.view-btn.active,
+.view-btn:hover {
+    background: var(--admin-primary);
+    color: white;
+    border-color: var(--admin-primary);
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-controls select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    min-width: 150px;
+}
+
+/* Empty States */
+.empty-albums {
+    text-align: center;
+    padding: 3rem;
+    color: var(--admin-text-light);
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--admin-primary);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.link-btn:hover {
+    color: #1A365D;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .albums-grid,
+    .photos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .upload-options,
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .album-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-controls select {
+        min-width: auto;
+    }
+    
+    .photo-viewer-content {
+        padding: 1rem;
+    }
+    
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .prev-btn {
+        left: 1rem;
+    }
+    
+    .next-btn {
+        right: 1rem;
+    }
+    
+    .photo-info {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        padding: 1rem;
+    }
+    
+    .photo-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

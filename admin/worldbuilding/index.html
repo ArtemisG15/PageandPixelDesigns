@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worldbuilding Manager - Author Admin</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="nav-container">
+            <a href="../../" class="logo">Page & Pixel Designs</a>
+            <div class="nav-actions">
+                <a href="../" class="back-btn">← Dashboard</a>
+                <button onclick="AuthSystem.logout()" class="logout-btn">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-container">
+        <div class="admin-header">
+            <h1>🌍 Worldbuilding Manager</h1>
+            <p>Create immersive worlds and character guides that captivate your readers</p>
+        </div>
+
+        <!-- Content Management Toolbar -->
+        <div class="content-toolbar">
+            <div class="toolbar-section">
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid" title="Grid View">
+                        <span class="icon">⊞</span>
+                    </button>
+                    <button class="view-btn" data-view="list" title="List View">
+                        <span class="icon">☰</span>
+                    </button>
+                </div>
+                
+                <div class="filter-options">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="characters">Characters</option>
+                        <option value="locations">Locations</option>
+                        <option value="cultures">Cultures</option>
+                        <option value="magic">Magic Systems</option>
+                        <option value="history">History</option>
+                        <option value="technology">Technology</option>
+                        <option value="religion">Religion</option>
+                        <option value="politics">Politics</option>
+                    </select>
+                    
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="complete">Complete</option>
+                        <option value="published">Published</option>
+                    </select>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search worldbuilding..." class="search-input">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <div class="toolbar-actions">
+                <div class="bulk-actions" style="display: none;" id="bulkActions">
+                    <span class="bulk-count">0 selected</span>
+                    <button class="bulk-btn" onclick="WorldbuildingManager.bulkPublish()">Publish</button>
+                    <button class="bulk-btn" onclick="WorldbuildingManager.bulkArchive()">Archive</button>
+                    <button class="bulk-btn danger" onclick="WorldbuildingManager.bulkDelete()">Delete</button>
+                </div>
+                
+                <button class="primary-btn" onclick="WorldbuildingManager.showEditor()">
+                    <span class="icon">+</span>
+                    Add New Entry
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number" id="totalEntries">0</div>
+                <div class="stat-label">Total Entries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="publishedCount">0</div>
+                <div class="stat-label">Published</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="draftCount">0</div>
+                <div class="stat-label">Drafts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="recentlyUpdated">0</div>
+                <div class="stat-label">Updated This Week</div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state">
+            <div class="empty-content">
+                <div class="empty-icon">🌍</div>
+                <h3>Build Your World</h3>
+                <p>Create detailed character profiles, locations, magic systems, and lore that bring your stories to life. Start with your most important characters or places.</p>
+                <div class="empty-suggestions">
+                    <h4>Popular starting points:</h4>
+                    <div class="suggestion-tags">
+                        <button class="suggestion-tag" onclick="WorldbuildingManager.createQuickEntry('characters', 'Main Character')">Main Character</button>
+                        <button class="suggestion-tag" onclick="WorldbuildingManager.createQuickEntry('locations', 'Primary Setting')">Primary Setting</button>
+                        <button class="suggestion-tag" onclick="WorldbuildingManager.createQuickEntry('magic', 'Magic System')">Magic System</button>
+                        <button class="suggestion-tag" onclick="WorldbuildingManager.createQuickEntry('cultures', 'Culture/Society')">Culture/Society</button>
+                    </div>
+                </div>
+                <button class="primary-btn" onclick="WorldbuildingManager.showEditor()">Create First Entry</button>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div id="contentGrid" class="content-grid" style="display: none;">
+            <!-- Entries will be populated here -->
+        </div>
+
+        <!-- Content List -->
+        <div id="contentList" class="content-list" style="display: none;">
+            <!-- List view will be populated here -->
+        </div>
+
+        <!-- Entry Editor Modal -->
+        <div id="entryEditor" class="modal-overlay">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h2 id="editorTitle">Create Worldbuilding Entry</h2>
+                    <button class="close-btn" onclick="WorldbuildingManager.closeEditor()">&times;</button>
+                </div>
+                
+                <form id="entryForm" class="modal-body">
+                    <div class="form-layout">
+                        <!-- Basic Information -->
+                        <div class="form-section">
+                            <h3>Basic Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="entryTitle">Title *</label>
+                                    <input type="text" id="entryTitle" required placeholder="e.g., Aragorn, The Shire, Draconic Magic">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="entryCategory">Category *</label>
+                                    <select id="entryCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="characters">Characters</option>
+                                        <option value="locations">Locations</option>
+                                        <option value="cultures">Cultures</option>
+                                        <option value="magic">Magic Systems</option>
+                                        <option value="history">History</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="religion">Religion</option>
+                                        <option value="politics">Politics</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="entrySubtitle">Subtitle/Description</label>
+                                <input type="text" id="entrySubtitle" placeholder="Brief description (e.g., 'King of Gondor', 'Peaceful hobbit village')">
+                            </div>
+                        </div>
+
+                        <!-- Rich Content Editor -->
+                        <div class="form-section">
+                            <h3>Content</h3>
+                            
+                            <div class="editor-toolbar">
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.formatText('bold')" title="Bold">
+                                    <strong>B</strong>
+                                </button>
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.formatText('italic')" title="Italic">
+                                    <em>I</em>
+                                </button>
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.formatText('underline')" title="Underline">
+                                    <u>U</u>
+                                </button>
+                                <span class="toolbar-divider">|</span>
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.insertTemplate('character')" title="Character Template">
+                                    👤
+                                </button>
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.insertTemplate('location')" title="Location Template">
+                                    🏰
+                                </button>
+                                <button type="button" class="editor-btn" onclick="WorldbuildingManager.insertTemplate('magic')" title="Magic Template">
+                                    ✨
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="entryContent" rows="12" placeholder="Describe this element of your world in detail...
+
+Pro tip: Use the template buttons above to get started with structured content for characters, locations, or magic systems."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Metadata -->
+                        <div class="form-section">
+                            <h3>Organization</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="entryTags">Tags</label>
+                                    <input type="text" id="entryTags" placeholder="Add tags separated by commas">
+                                    <small>e.g., protagonist, warrior, nobility, important</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="entryStatus">Status</label>
+                                    <select id="entryStatus">
+                                        <option value="draft">Draft</option>
+                                        <option value="complete">Complete</option>
+                                        <option value="published">Published</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="relatedEntries">Related Entries</label>
+                                    <input type="text" id="relatedEntries" placeholder="Link to related worldbuilding entries">
+                                    <small>Create connections between characters, locations, etc.</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="importance">Importance Level</label>
+                                    <select id="importance">
+                                        <option value="low">Minor Detail</option>
+                                        <option value="medium" selected>Standard</option>
+                                        <option value="high">Major Element</option>
+                                        <option value="critical">Story Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Options -->
+                        <div class="form-section collapsible">
+                            <h3 onclick="WorldbuildingManager.toggleSection(this)">
+                                <span class="toggle-icon">▶</span>
+                                Advanced Options
+                            </h3>
+                            <div class="section-content" style="display: none;">
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="spoilerWarning">
+                                        Contains Spoilers
+                                    </label>
+                                    <small>Hide this content behind a spoiler warning</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="fanFavorite">
+                                        Fan Favorite
+                                    </label>
+                                    <small>Highlight as popular with readers</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="customSlug">Custom URL Slug</label>
+                                    <input type="text" id="customSlug" placeholder="custom-url-name">
+                                    <small>Leave blank to auto-generate from title</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <div class="form-actions">
+                            <button type="button" onclick="WorldbuildingManager.closeEditor()" class="cancel-btn">Cancel</button>
+                            <button type="button" onclick="WorldbuildingManager.saveAsDraft()" class="draft-btn">Save as Draft</button>
+                            <button type="submit" class="save-btn">Save & Publish</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div id="previewModal" class="modal-overlay">
+            <div class="modal-content large-modal">
+                <div class="modal-header">
+                    <h2>Preview</h2>
+                    <button class="close-btn" onclick="WorldbuildingManager.closePreview()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="previewContent" class="preview-content">
+                        <!-- Preview will be populated here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="WorldbuildingManager.closePreview()" class="cancel-btn">Close</button>
+                    <button onclick="WorldbuildingManager.editFromPreview()" class="primary-btn">Edit</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+
+            <form id="signInForm" class="auth-form active" onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to manage your worldbuilding</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+
+                <div class="auth-error" id="signInError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="../script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

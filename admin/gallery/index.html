@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Manager - Page & Pixel Designs</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/auth-components.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../../assets/images/logo.svg" alt="Page & Pixel Designs" class="nav-logo" style="width: 40px; height: 40px;">
+                <span class="nav-title">Gallery Manager</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="/admin/" class="nav-link">Dashboard</a>
+                <a href="/admin/books/" class="nav-link">Books</a>
+                <a href="/admin/blog/" class="nav-link">Blog</a>
+                <a href="/admin/events/" class="nav-link">Events</a>
+                <a href="/admin/gallery/" class="nav-link active">Gallery</a>
+                <a href="/admin/reviews/" class="nav-link">Reviews</a>
+                <a href="../../" class="nav-link back-to-site">← Back to Main Site</a>
+                <div class="nav-item" id="authNavItem">
+                    <a href="#" onclick="AuthSystem.logout(); return false;" class="auth-nav-link">
+                        <span class="auth-user-indicator">🚪</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading gallery manager...</p>
+        </div>
+
+        <!-- Not Authenticated State -->
+        <div id="notAuthenticatedState" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>Access Required</h2>
+                <p>Please sign in to manage your photo gallery.</p>
+                <button onclick="AuthSystem.showAuthModal()" class="auth-btn">Sign In</button>
+            </div>
+        </div>
+
+        <!-- Gallery Manager -->
+        <div id="galleryManager" class="manager-panel" style="display: none;">
+            <!-- Header -->
+            <header class="manager-header">
+                <div class="header-content">
+                    <h1>🖼️ Gallery Manager</h1>
+                    <p>Organize and showcase your photos, book covers, and behind-the-scenes content</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="GalleryManager.uploadPhotos()" class="primary-btn">
+                        📤 Upload Photos
+                    </button>
+                    <button onclick="GalleryManager.createAlbum()" class="secondary-btn">
+                        📁 New Album
+                    </button>
+                </div>
+            </header>
+
+            <!-- Gallery Dashboard -->
+            <div class="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalPhotos">0</span>
+                            <span class="stat-label">Total Photos</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📁</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalAlbums">0</span>
+                            <span class="stat-label">Albums</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="totalViews">0</span>
+                            <span class="stat-label">Total Views</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💾</div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="storageUsed">0 MB</span>
+                            <span class="stat-label">Storage Used</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Albums Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Photo Albums</h2>
+                    <div class="view-controls">
+                        <button onclick="GalleryManager.setView('grid')" class="view-btn active" id="gridViewBtn">
+                            ⊞ Grid
+                        </button>
+                        <button onclick="GalleryManager.setView('list')" class="view-btn" id="listViewBtn">
+                            ☰ List
+                        </button>
+                    </div>
+                </div>
+
+                <div class="albums-container" id="albumsContainer">
+                    <!-- Albums will be populated here -->
+                </div>
+            </div>
+
+            <!-- Photos Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Recent Photos</h2>
+                    <div class="filter-controls">
+                        <select id="albumFilter" onchange="GalleryManager.filterPhotos()">
+                            <option value="">All Albums</option>
+                        </select>
+                        <select id="typeFilter" onchange="GalleryManager.filterPhotos()">
+                            <option value="">All Types</option>
+                            <option value="book-covers">Book Covers</option>
+                            <option value="author-photos">Author Photos</option>
+                            <option value="events">Event Photos</option>
+                            <option value="behind-scenes">Behind the Scenes</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="photos-grid" id="photosGrid">
+                    <!-- Photos will be populated here -->
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">📷</div>
+                    <h3>No Photos Yet</h3>
+                    <p>Start building your gallery by uploading your first photos</p>
+                    <button onclick="GalleryManager.uploadPhotos()" class="primary-btn">Upload Your First Photos</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Photo Upload Modal -->
+    <div id="photoUploadModal" class="modal-overlay">
+        <div class="modal-content upload-modal">
+            <div class="modal-header">
+                <h3>📤 Upload Photos</h3>
+                <button class="close-modal" onclick="GalleryManager.closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📷</div>
+                    <h4>Drag & Drop Photos Here</h4>
+                    <p>Or click to browse files</p>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                    <button onclick="document.getElementById('fileInput').click()" class="browse-btn">Browse Files</button>
+                </div>
+                
+                <div class="upload-options">
+                    <div class="form-group">
+                        <label for="uploadAlbum">Add to Album</label>
+                        <select id="uploadAlbum">
+                            <option value="">Select Album (Optional)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="photoType">Photo Type</label>
+                        <select id="photoType">
+                            <option value="other">Other</option>
+                            <option value="book-covers">Book Cover</option>
+                            <option value="author-photos">Author Photo</option>
+                            <option value="events">Event Photo</option>
+                            <option value="behind-scenes">Behind the Scenes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="upload-queue" id="uploadQueue" style="display: none;">
+                    <!-- Upload progress will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album Editor Modal -->
+    <div id="albumEditorModal" class="modal-overlay">
+        <div class="modal-content album-editor-modal">
+            <div class="modal-header">
+                <h3 id="albumEditorTitle">Create New Album</h3>
+                <button class="close-modal" onclick="GalleryManager.closeAlbumEditor()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="albumForm">
+                    <div class="form-group">
+                        <label for="albumName">Album Name *</label>
+                        <input type="text" id="albumName" required placeholder="e.g., Book Launch Event">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="albumDescription">Description</label>
+                        <textarea id="albumDescription" rows="3" placeholder="Describe this album..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="albumCategory">Category</label>
+                            <select id="albumCategory">
+                                <option value="general">General</option>
+                                <option value="book-covers">Book Covers</option>
+                                <option value="author-photos">Author Photos</option>
+                                <option value="events">Events</option>
+                                <option value="behind-scenes">Behind the Scenes</option>
+                                <option value="fan-art">Fan Art</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="albumVisibility">Visibility</label>
+                            <select id="albumVisibility">
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                                <option value="unlisted">Unlisted</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="albumFeatured">
+                            Feature this album on homepage
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="albumDownloadable">
+                            Allow photo downloads
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" onclick="GalleryManager.closeAlbumEditor()" class="secondary-btn">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Album</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Viewer Modal -->
+    <div id="photoViewerModal" class="modal-overlay photo-viewer">
+        <div class="photo-viewer-content">
+            <button class="close-modal" onclick="GalleryManager.closePhotoViewer()">&times;</button>
+            <button class="nav-btn prev-btn" onclick="GalleryManager.previousPhoto()">‹</button>
+            <button class="nav-btn next-btn" onclick="GalleryManager.nextPhoto()">›</button>
+            
+            <div class="photo-container">
+                <img id="viewerImage" src="" alt="">
+            </div>
+            
+            <div class="photo-info">
+                <h3 id="photoTitle">Photo Title</h3>
+                <p id="photoDescription">Photo description...</p>
+                <div class="photo-meta">
+                    <span id="photoDate">Date</span>
+                    <span id="photoSize">Size</span>
+                    <span id="photoDimensions">Dimensions</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+            <!-- Auth forms would go here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

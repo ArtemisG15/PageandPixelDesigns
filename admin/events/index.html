@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Management - Admin Panel</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/auth-components.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../../assets/images/logo.svg" alt="Page & Pixel Designs" class="nav-logo" style="width: 40px; height: 40px;">
+                <span class="nav-title">Events Management</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="/admin/" class="nav-link">Dashboard</a>
+                <a href="/admin/books/" class="nav-link">Books</a>
+                <a href="/admin/blog/" class="nav-link">Blog</a>
+                <a href="/admin/events/" class="nav-link active">Events</a>
+                <a href="/admin/gallery/" class="nav-link">Gallery</a>
+                <a href="/admin/reviews/" class="nav-link">Reviews</a>
+                <a href="../../" class="nav-link back-to-site">← Back to Main Site</a>
+                <div class="nav-item" id="authNavItem">
+                    <a href="#" onclick="AuthSystem.logout(); return false;" class="auth-nav-link">
+                        <span class="auth-user-indicator">🚪</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading events management...</p>
+        </div>
+
+        <div id="notAuthenticatedState" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>Access Required</h2>
+                <p>Please sign in to manage your events.</p>
+                <button onclick="AuthSystem.showAuthModal()" class="auth-btn">Sign In</button>
+            </div>
+        </div>
+
+        <div id="featureNotAvailable" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>📅 Events Calendar Not Available</h2>
+                <p>You need to purchase the Events Calendar feature to access event management.</p>
+                <button onclick="window.location.href='/admin/'" class="auth-btn">Go to Dashboard</button>
+            </div>
+        </div>
+
+        <div id="eventsManagement" class="feature-page" style="display: none;">
+            <header class="page-header">
+                <div class="header-content">
+                    <h1>📅 Events Management</h1>
+                    <p>Schedule and manage your author events</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="EventsManager.createEvent()" class="add-btn">+ New Event</button>
+                </div>
+            </header>
+
+            <div class="events-content">
+                <div class="events-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalEvents">0</span>
+                        <span class="stat-label">Total Events</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="upcomingEvents">0</span>
+                        <span class="stat-label">Upcoming</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="pastEvents">0</span>
+                        <span class="stat-label">Past Events</span>
+                    </div>
+                </div>
+
+                <div class="events-section">
+                    <div class="events-header">
+                        <h3>Your Events</h3>
+                        <div class="event-filters">
+                            <select id="categoryFilter">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="past">Past</option>
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="events-list">
+                        <div id="eventsContainer">
+                            <div class="empty-state">
+                                <p>No events yet. Create your first event to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Editor Modal -->
+            <div id="eventEditorModal" class="modal-overlay">
+                <div class="modal-content event-editor-modal">
+                    <div class="modal-header">
+                        <h3 id="editorTitle">Create New Event</h3>
+                        <button class="close-modal" onclick="EventsManager.closeEventEditor()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="eventForm">
+                            <input type="hidden" id="eventId" name="eventId">
+                            
+                            <div class="form-group">
+                                <label for="eventTitle">Event Title *</label>
+                                <input type="text" id="eventTitle" name="eventTitle" required placeholder="Enter event title">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventDescription">Description</label>
+                                <textarea id="eventDescription" name="eventDescription" rows="4" placeholder="Describe your event"></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="eventDate">Date *</label>
+                                    <input type="date" id="eventDate" name="eventDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eventTime">Time</label>
+                                    <input type="time" id="eventTime" name="eventTime">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventCategory">Category</label>
+                                <select id="eventCategory" name="eventCategory">
+                                    <option value="">Select category</option>
+                                    <option value="book-signing">Book Signing</option>
+                                    <option value="conference">Conference</option>
+                                    <option value="workshop">Workshop</option>
+                                    <option value="virtual-event">Virtual Event</option>
+                                    <option value="release-party">Release Party</option>
+                                    <option value="interview">Interview</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="isVirtual" name="isVirtual" onchange="EventsManager.toggleVirtualFields()">
+                                    Virtual Event
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventLocation">Location</label>
+                                <input type="text" id="eventLocation" name="eventLocation" placeholder="Event venue or address">
+                            </div>
+
+                            <div id="virtualFields" style="display: none;">
+                                <div class="form-group">
+                                    <label for="virtualLink">Virtual Event Link</label>
+                                    <input type="url" id="virtualLink" name="virtualLink" placeholder="https://zoom.us/j/...">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="registrationLink">Registration Link</label>
+                                    <input type="url" id="registrationLink" name="registrationLink" placeholder="https://...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxAttendees">Max Attendees</label>
+                                    <input type="number" id="maxAttendees" name="maxAttendees" min="1" placeholder="Optional">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventStatus">Status</label>
+                                <select id="eventStatus" name="eventStatus">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventNotes">Notes</label>
+                                <textarea id="eventNotes" name="eventNotes" rows="3" placeholder="Internal notes about the event"></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" onclick="EventsManager.closeEventEditor()" class="secondary-btn">Cancel</button>
+                                <button type="button" onclick="EventsManager.saveEvent()" class="primary-btn">Save Event</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+
+            <form id="signInForm" class="auth-form active" onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to manage your events</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+
+                <div class="auth-error" id="signInError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="../script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

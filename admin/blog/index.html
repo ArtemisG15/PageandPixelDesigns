@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management - Admin Panel</title>
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/auth-components.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../../assets/images/logo.svg" alt="Page & Pixel Designs" class="nav-logo" style="width: 40px; height: 40px;">
+                <span class="nav-title">Blog Management</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="/admin/" class="nav-link">Dashboard</a>
+                <a href="/admin/books/" class="nav-link">Books</a>
+                <a href="/admin/blog/" class="nav-link active">Blog</a>
+                <a href="/admin/events/" class="nav-link">Events</a>
+                <a href="/admin/gallery/" class="nav-link">Gallery</a>
+                <a href="/admin/reviews/" class="nav-link">Reviews</a>
+                <a href="../../" class="nav-link back-to-site">← Back to Main Site</a>
+                <div class="nav-item" id="authNavItem">
+                    <a href="#" onclick="AuthSystem.logout(); return false;" class="auth-nav-link">
+                        <span class="auth-user-indicator">🚪</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading blog management...</p>
+        </div>
+
+        <div id="notAuthenticatedState" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>Access Required</h2>
+                <p>Please sign in to manage your blog.</p>
+                <button onclick="AuthSystem.showAuthModal()" class="auth-btn">Sign In</button>
+            </div>
+        </div>
+
+        <div id="featureNotAvailable" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>📝 Blog System Not Available</h2>
+                <p>You need to purchase the Blog System feature to access blog management.</p>
+                <button onclick="window.location.href='/admin/'" class="auth-btn">Go to Dashboard</button>
+            </div>
+        </div>
+
+        <div id="blogManagement" class="feature-page" style="display: none;">
+            <header class="page-header">
+                <div class="header-content">
+                    <h1>✍️ Blog Management</h1>
+                    <p>Create and manage your blog posts</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="BlogManager.createPost()" class="add-btn">+ New Post</button>
+                    <button onclick="BlogManager.manageCategories()" class="action-btn" id="categoriesBtn">Categories</button>
+                </div>
+            </header>
+
+            <div class="blog-content">
+                <div class="blog-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalPosts">0</span>
+                        <span class="stat-label">Total Posts</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="publishedPosts">0</span>
+                        <span class="stat-label">Published</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="draftPosts">0</span>
+                        <span class="stat-label">Drafts</span>
+                    </div>
+                </div>
+
+                <div class="posts-section">
+                    <div class="posts-header">
+                        <h3>Recent Posts</h3>
+                        <div class="post-filters">
+                            <select>
+                                <option>All Posts</option>
+                                <option>Published</option>
+                                <option>Drafts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="posts-list">
+                        <div id="postsContainer">
+                            <div class="empty-state">
+                                <p>No blog posts yet. Create your first post to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Post Editor Modal -->
+            <div id="postEditorModal" class="modal-overlay">
+                <div class="modal-content post-editor-modal">
+                    <div class="modal-header">
+                        <h3 id="editorTitle">Create New Post</h3>
+                        <button class="close-modal" onclick="BlogManager.closePostEditor()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="postForm">
+                            <input type="hidden" id="postId" name="postId">
+                            <div class="form-group">
+                                <label for="postTitle">Post Title *</label>
+                                <input type="text" id="postTitle" name="postTitle" required placeholder="Enter your post title">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postExcerpt">Excerpt</label>
+                                <textarea id="postExcerpt" name="postExcerpt" rows="3" placeholder="Brief summary of your post"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postContent">Content *</label>
+                                <div class="rich-editor-container">
+                                    <div class="editor-toolbar">
+                                        <button type="button" class="editor-btn" data-command="bold" title="Bold">B</button>
+                                        <button type="button" class="editor-btn" data-command="italic" title="Italic">I</button>
+                                        <button type="button" class="editor-btn" data-command="underline" title="Underline">U</button>
+                                        <span class="separator"></span>
+                                        <button type="button" class="editor-btn" data-command="insertUnorderedList" title="Bullet List">• List</button>
+                                        <button type="button" class="editor-btn" data-command="insertOrderedList" title="Numbered List">1. List</button>
+                                        <span class="separator"></span>
+                                        <button type="button" class="editor-btn" data-command="createLink" title="Add Link">🔗</button>
+                                        <button type="button" class="editor-btn" data-command="insertImage" title="Add Image">🖼️</button>
+                                        <span class="separator"></span>
+                                        <select class="format-select" onchange="BlogManager.formatBlock(this.value)">
+                                            <option value="">Format</option>
+                                            <option value="h2">Heading 2</option>
+                                            <option value="h3">Heading 3</option>
+                                            <option value="p">Paragraph</option>
+                                            <option value="blockquote">Quote</option>
+                                        </select>
+                                    </div>
+                                    <div id="postContent" class="rich-editor" contenteditable="true" placeholder="Write your blog post content here..."></div>
+                                    <textarea id="postContentHidden" style="display: none;" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="postTags">Tags (comma separated)</label>
+                                    <input type="text" id="postTags" name="postTags" placeholder="writing, fantasy, updates">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="postStatus">Status</label>
+                                    <select id="postStatus" name="postStatus">
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" onclick="BlogManager.closePostEditor()" class="secondary-btn">Cancel</button>
+                                <button type="button" onclick="BlogManager.savePost()" class="primary-btn">Save Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+
+            <form id="signInForm" class="auth-form active" onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to manage your blog</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+
+                <div class="auth-error" id="signInError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth-system.js"></script>
+    <script src="../script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

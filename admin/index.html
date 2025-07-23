@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Admin Panel - Page & Pixel Designs</title>
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/auth-components.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+            <img src="../assets/images/logo.svg" alt="Page & Pixel Designs" class="nav-logo" style="width: 40px; height: 40px;">
+            <span class="nav-title">Admin Panel</span>
+        </div>
+            <div class="nav-links" id="navLinks">
+                <a href="/admin/" class="nav-link active">Dashboard</a>
+                <a href="/admin/books/" class="nav-link">Books</a>
+                <a href="/admin/blog/" class="nav-link">Blog</a>
+                <a href="/admin/events/" class="nav-link">Events</a>
+                <a href="/admin/gallery/" class="nav-link">Gallery</a>
+                <a href="/admin/reviews/" class="nav-link">Reviews</a>
+                <a href="../" class="nav-link back-to-site">← Back to Main Site</a>
+                <div class="nav-item" id="authNavItem">
+                    <a href="#" onclick="AuthSystem.logout(); return false;" class="auth-nav-link">
+                        <span class="auth-user-indicator">🚪</span>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Admin Content -->
+    <main class="admin-main">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+
+        <!-- Not Authenticated State -->
+        <div id="notAuthenticatedState" class="not-auth-state" style="display: none;">
+            <div class="auth-prompt">
+                <h2>Access Required</h2>
+                <p>Please sign in to access your admin panel.</p>
+                <button onclick="AuthSystem.showAuthModal()" class="auth-btn">Sign In</button>
+            </div>
+        </div>
+
+        <!-- Main Admin Panel -->
+        <div id="adminPanel" class="admin-panel" style="display: none;">
+            <!-- Header -->
+            <header class="admin-header">
+                <div class="user-welcome">
+                    <h1>Welcome back, <span id="userName">Author</span>!</h1>
+                    <p id="supportLevel">Support Level: <span class="support-badge">Base Package</span></p>
+                </div>
+                <div class="quick-actions">
+                    <button onclick="AdminPanel.openFeatureStore()" class="quick-btn feature-store-btn">
+                        🛍️ Feature Store
+                    </button>
+                    <button onclick="AdminPanel.upgradeSupport()" class="quick-btn upgrade-btn">
+                        ⬆️ Upgrade Support
+                    </button>
+                </div>
+            </header>
+
+            <!-- Quick Navigation -->
+            <div class="quick-nav-grid">
+                <a href="/admin/books/" class="nav-card">
+                    <div class="nav-card-icon">📚</div>
+                    <h3>Book Management</h3>
+                    <p>Manage your book showcase and details</p>
+                </a>
+                
+                <a href="/admin/blog/" class="nav-card" id="blogNavCard">
+                    <div class="nav-card-icon">✍️</div>
+                    <h3>Blog System</h3>
+                    <p>Create and manage blog posts</p>
+                    <div class="feature-status">Available</div>
+                </a>
+                
+                <a href="/admin/events/" class="nav-card" id="eventsNavCard">
+                    <div class="nav-card-icon">📅</div>
+                    <h3>Events Calendar</h3>
+                    <p>Manage events and appointments</p>
+                    <div class="feature-status">Available</div>
+                </a>
+                
+                <a href="/admin/gallery/" class="nav-card" id="galleryNavCard">
+                    <div class="nav-card-icon">🖼️</div>
+                    <h3>Photo Gallery</h3>
+                    <p>Upload and organize images</p>
+                    <div class="feature-status disabled">Disabled</div>
+                </a>
+                
+                <a href="/admin/reviews/" class="nav-card" id="reviewsNavCard">
+                    <div class="nav-card-icon">⭐</div>
+                    <h3>Reader Reviews</h3>
+                    <p>Manage testimonials and reviews</p>
+                    <div class="feature-status">Available</div>
+                </a>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Always Available - Profile Management -->
+                <section class="admin-section" id="profileSection">
+                    <div class="section-header">
+                        <h3>📝 Profile Management</h3>
+                        <span class="feature-badge base">Base Package</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="profile-form">
+                            <div class="form-group">
+                                <label for="authorName">Author Name</label>
+                                <input type="text" id="authorName" placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="authorBio">Biography</label>
+                                <textarea id="authorBio" rows="4" placeholder="Tell readers about yourself..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="authorPhoto">Profile Photo URL</label>
+                                <input type="url" id="authorPhoto" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email</label>
+                                <input type="email" id="contactEmail" placeholder="author@example.com">
+                            </div>
+                            <button onclick="AdminPanel.saveProfile()" class="save-btn">Save Profile</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Always Available - Book Showcase -->
+                <section class="admin-section" id="booksSection">
+                    <div class="section-header">
+                        <h3>📚 Book Management</h3>
+                        <span class="feature-badge base">Base Package</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="books-list" id="booksList">
+                            <!-- Books will be populated here -->
+                        </div>
+                        <button onclick="AdminPanel.addNewBook()" class="add-btn">+ Add New Book</button>
+                    </div>
+                </section>
+
+                <!-- Newsletter Integration - Always Available -->
+                <section class="admin-section" id="newsletterSection">
+                    <div class="section-header">
+                        <h3>📧 Newsletter Integration</h3>
+                        <span class="feature-badge base">Base Package</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="newsletter-settings">
+                            <div class="form-group">
+                                <label for="newsletterProvider">Provider</label>
+                                <select id="newsletterProvider">
+                                    <option value="">Select Provider</option>
+                                    <option value="mailchimp">MailChimp</option>
+                                    <option value="convertkit">ConvertKit</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="newsletterApiKey">API Key</label>
+                                <input type="password" id="newsletterApiKey" placeholder="Your API key">
+                            </div>
+                            <div class="stats-row">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="subscriberCount">-</span>
+                                    <span class="stat-label">Subscribers</span>
+                                </div>
+                            </div>
+                            <button onclick="AdminPanel.testNewsletterConnection()" class="test-btn">Test Connection</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Blog System - Feature Dependent -->
+                <section class="admin-section feature-section" id="blogSection" data-feature="blog" style="display: none;">
+                    <div class="section-header">
+                        <h3>✍️ Blog Management</h3>
+                        <span class="feature-badge premium">Blog System - $25</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="blogToggle" onchange="AdminPanel.toggleFeature('blog', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="blogContent">
+                        <div class="blog-actions">
+                            <button onclick="AdminPanel.createBlogPost()" class="action-btn">+ New Post</button>
+                            <button onclick="AdminPanel.manageBlogCategories()" class="action-btn" id="blogAdvanced1">Manage Categories</button>
+                            <button onclick="AdminPanel.schedulePosts()" class="action-btn" id="blogAdvanced2">Schedule Posts</button>
+                        </div>
+                        <div class="posts-list" id="blogPostsList">
+                            <!-- Blog posts will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Events Calendar - Feature Dependent -->
+                <section class="admin-section feature-section" id="eventsSection" data-feature="events" style="display: none;">
+                    <div class="section-header">
+                        <h3>📅 Events Calendar</h3>
+                        <span class="feature-badge premium">Events Calendar - $20</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="eventsToggle" onchange="AdminPanel.toggleFeature('events', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="eventsContent">
+                        <div class="events-actions">
+                            <button onclick="AdminPanel.createEvent()" class="action-btn">+ New Event</button>
+                            <button onclick="AdminPanel.manageRSVPs()" class="action-btn" id="eventsAdvanced1">RSVP Management</button>
+                            <button onclick="AdminPanel.recurringEvents()" class="action-btn" id="eventsAdvanced2">Recurring Events</button>
+                        </div>
+                        <div class="events-list" id="eventsList">
+                            <!-- Events will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photo Gallery - Feature Dependent -->
+                <section class="admin-section feature-section" id="gallerySection" data-feature="gallery" style="display: none;">
+                    <div class="section-header">
+                        <h3>🖼️ Photo Gallery</h3>
+                        <span class="feature-badge premium">Photo Gallery - $30</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="galleryToggle" onchange="AdminPanel.toggleFeature('gallery', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="galleryContent">
+                        <div class="gallery-actions">
+                            <button onclick="AdminPanel.uploadPhotos()" class="action-btn">+ Upload Photos</button>
+                            <button onclick="AdminPanel.manageAlbums()" class="action-btn" id="galleryAdvanced1">Manage Albums</button>
+                            <button onclick="AdminPanel.gallerySettings()" class="action-btn" id="galleryAdvanced2">Gallery Settings</button>
+                        </div>
+                        <div class="gallery-grid" id="galleryGrid">
+                            <!-- Gallery items will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reader Reviews - Feature Dependent -->
+                <section class="admin-section feature-section" id="reviewsSection" data-feature="testimonials" style="display: none;">
+                    <div class="section-header">
+                        <h3>⭐ Reader Reviews</h3>
+                        <span class="feature-badge premium">Reader Reviews - $10</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="reviewsToggle" onchange="AdminPanel.toggleFeature('testimonials', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="reviewsContent">
+                        <div class="reviews-actions">
+                            <button onclick="AdminPanel.addReview()" class="action-btn">+ Add Review</button>
+                            <button onclick="AdminPanel.moderateReviews()" class="action-btn" id="reviewsAdvanced1">Moderate Reviews</button>
+                            <button onclick="AdminPanel.reviewSettings()" class="action-btn" id="reviewsAdvanced2">Display Settings</button>
+                        </div>
+                        <div class="reviews-list" id="reviewsList">
+                            <!-- Reviews will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Worldbuilding Guide - Feature Dependent -->
+                <section class="admin-section feature-section" id="worldbuildingSection" data-feature="worldbuilding" style="display: none;">
+                    <div class="section-header">
+                        <h3>🗺️ Worldbuilding Guide</h3>
+                        <span class="feature-badge premium">Worldbuilding - $20</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="worldbuildingToggle" onchange="AdminPanel.toggleFeature('worldbuilding', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="worldbuildingContent">
+                        <div class="worldbuilding-actions">
+                            <button onclick="AdminPanel.createWorldPage()" class="action-btn">+ Create Page</button>
+                            <button onclick="AdminPanel.characterTools()" class="action-btn" id="worldbuildingAdvanced1">Character Tools</button>
+                            <button onclick="AdminPanel.interactiveElements()" class="action-btn" id="worldbuildingAdvanced2">Interactive Elements</button>
+                        </div>
+                        <div class="worldbuilding-pages" id="worldbuildingPages">
+                            <!-- Worldbuilding pages will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Direct Book Sales - Feature Dependent -->
+                <section class="admin-section feature-section" id="ecommerceSection" data-feature="ecommerce" style="display: none;">
+                    <div class="section-header">
+                        <h3>💰 Direct Book Sales</h3>
+                        <span class="feature-badge premium">Direct Sales - $45</span>
+                        <div class="feature-toggle">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="ecommerceToggle" onchange="AdminPanel.toggleFeature('ecommerce', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="section-content" id="ecommerceContent">
+                        <div class="ecommerce-actions">
+                            <button onclick="AdminPanel.manageInventory()" class="action-btn">Manage Inventory</button>
+                            <button onclick="AdminPanel.viewOrders()" class="action-btn" id="ecommerceAdvanced1">View Orders</button>
+                            <button onclick="AdminPanel.salesAnalytics()" class="action-btn" id="ecommerceAdvanced2">Sales Analytics</button>
+                        </div>
+                        <div class="ecommerce-stats">
+                            <div class="stat-row">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="totalSales">$0</span>
+                                    <span class="stat-label">Total Sales</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="pendingOrders">0</span>
+                                    <span class="stat-label">Pending Orders</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Support Section -->
+                <section class="admin-section" id="supportSection">
+                    <div class="section-header">
+                        <h3>🤝 Support & Help</h3>
+                        <span class="feature-badge base">Always Available</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="support-options" id="supportOptions">
+                            <!-- Support options will be populated based on user's support level -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Feature Store Modal -->
+    <div id="featureStoreModal" class="modal-overlay">
+        <div class="modal-content feature-store-modal">
+            <div class="modal-header">
+                <h3>🛍️ Feature Store</h3>
+                <button class="close-modal" onclick="AdminPanel.closeFeatureStore()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="features-grid" id="featuresGrid">
+                    <!-- Available features will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-overlay" onclick="AuthSystem.closeAuthModal()"></div>
+        <div class="auth-modal-content">
+            <button class="auth-close-btn" onclick="AuthSystem.closeAuthModal()">&times;</button>
+
+            <!-- Sign In Form -->
+            <form id="signInForm" class="auth-form active" onsubmit="AuthSystem.handleSignIn(event)">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to your author dashboard</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInEmail">Email Address</label>
+                    <input type="email" id="signInEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" required>
+                </div>
+
+                <div class="auth-error" id="signInError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" onclick="AuthSystem.switchToSignUp()">Sign up</a></p>
+                </div>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signUpForm" class="auth-form" onsubmit="AuthSystem.handleSignUp(event)">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Start building your author website</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signUpEmail">Email Address</label>
+                    <input type="email" id="signUpEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required minlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="signUpConfirm">Confirm Password</label>
+                    <input type="password" id="signUpConfirm" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signUpTerms" required>
+                        I agree to the <a href="#" target="_blank">Terms of Service</a>
+                    </label>
+                </div>
+
+                <div class="auth-error" id="signUpError"></div>
+
+                <button type="submit" class="auth-submit-btn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-spinner" style="display: none;">⟳</span>
+                </button>
+
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" onclick="AuthSystem.switchToSignIn()">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="authNotification" class="auth-notification">
+        <span class="notification-message"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/user-database.js"></script>
+    <script src="../assets/js/auth-system.js"></script>
+    <script src="../assets/js/stripe-integration.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
