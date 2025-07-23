@@ -804,4 +804,9 @@
     .modal-btn {
         width: 100%;
     }
+
+    .tooltip { 
+        right: 0; /* Instead of -100px */
+        max-width: calc(100vw - 2rem);
+    }
 }
